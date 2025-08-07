@@ -70,12 +70,16 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col glass-sidebar">"
+    <div className="flex h-screen w-64 flex-col glass-sidebar">
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-sidebar-border">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-            <Bot className="w-5 h-5 text-primary-foreground" />
+          <div className="w-8 h-8 flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/e0e4ec52-be30-4715-aa76-de0eeba42a9f.png" 
+              alt="Bull Logo" 
+              className="w-8 h-8 object-contain"
+            />
           </div>
           <div>
             <h1 className="text-lg font-semibold text-sidebar-foreground">OF Agency</h1>
