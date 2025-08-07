@@ -14,6 +14,7 @@ import {
   Calendar,
   Users,
   DollarSign,
+  Vault,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -33,6 +34,11 @@ const navigation = [
     name: "Models",
     href: "/models",
     icon: Users,
+  },
+  {
+    name: "Vault",
+    href: "/vault",
+    icon: Vault,
   },
   {
     name: "Content Calendar",
