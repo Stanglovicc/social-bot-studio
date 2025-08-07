@@ -41,11 +41,6 @@ const navigation = [
     icon: Vault,
   },
   {
-    name: "Content Calendar",
-    href: "/calendar",
-    icon: Calendar,
-  },
-  {
     name: "Financials",
     href: "/financials",
     icon: TrendingUp,
