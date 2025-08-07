@@ -4,6 +4,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
+import Models from "./pages/Models";
+import Chatters from "./pages/Chatters";
+import Calendar from "./pages/Calendar";
+import Financials from "./pages/Financials";
+import Team from "./pages/Team";
+import Reports from "./pages/Reports";
 import Chatbot from "./pages/Chatbot";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -18,6 +24,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/models" element={<Models />} />
+          <Route path="/chatters" element={<Chatters />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/financials" element={<Financials />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/chatbot/*" element={<Chatbot />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
