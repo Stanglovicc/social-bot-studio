@@ -117,17 +117,10 @@ export function Sidebar() {
       {/* Status indicators */}
       <div className="p-4 border-t border-sidebar-border space-y-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">Google Drive</span>
+          <span className="text-muted-foreground">AdsPower</span>
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-success">Synced</span>
-          </div>
-        </div>
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">OnlyFans API</span>
-          <div className="flex items-center space-x-1">
-            <div className="w-2 h-2 bg-warning rounded-full"></div>
-            <span className="text-warning">Limited</span>
+            <span className="text-success">Connected</span>
           </div>
         </div>
       </div>
