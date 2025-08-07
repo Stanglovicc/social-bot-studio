@@ -165,6 +165,8 @@
     backdrop-filter: blur(20px) saturate(180%);
     background: var(--sidebar-background);
     border-right: 1px solid hsl(var(--sidebar-border));
+    border-top-right-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
   }
 
   /* Smooth scrolling */
