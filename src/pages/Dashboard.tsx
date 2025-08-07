@@ -30,16 +30,96 @@ import {
   Cell,
 } from "recharts";
 
-// Sample data for OnlyFans agency
-const revenueData = [
-  { name: "Mon", revenue: 12400, subscribers: 145 },
-  { name: "Tue", revenue: 15600, subscribers: 168 },
-  { name: "Wed", revenue: 18200, subscribers: 192 },
-  { name: "Thu", revenue: 16800, subscribers: 178 },
-  { name: "Fri", revenue: 22100, subscribers: 215 },
-  { name: "Sat", revenue: 19500, subscribers: 189 },
-  { name: "Sun", revenue: 25300, subscribers: 234 },
-];
+// Sample data for OnlyFans agency - organized by time period
+const dataByPeriod = {
+  today: {
+    conversations: { value: "342", change: "+24.1% from yesterday" },
+    ongoingChats: { value: "47", change: "+12.3% from yesterday" },
+    converted: { value: "28", change: "+8 today" },
+    conversionRate: { value: "8.2%", change: "-0.3% from yesterday" },
+    revenueData: [
+      { name: "6AM", revenue: 1200, subscribers: 12 },
+      { name: "9AM", revenue: 1800, subscribers: 18 },
+      { name: "12PM", revenue: 2400, subscribers: 24 },
+      { name: "3PM", revenue: 2100, subscribers: 21 },
+      { name: "6PM", revenue: 2800, subscribers: 28 },
+      { name: "9PM", revenue: 2200, subscribers: 22 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Hourly performance today"
+  },
+  week: {
+    conversations: { value: "2,194", change: "+18.7% from last week" },
+    ongoingChats: { value: "183", change: "+15.2% from last week" },
+    converted: { value: "189", change: "+42 this week" },
+    conversionRate: { value: "8.6%", change: "+1.2% from last week" },
+    revenueData: [
+      { name: "Mon", revenue: 12400, subscribers: 145 },
+      { name: "Tue", revenue: 15600, subscribers: 168 },
+      { name: "Wed", revenue: 18200, subscribers: 192 },
+      { name: "Thu", revenue: 16800, subscribers: 178 },
+      { name: "Fri", revenue: 22100, subscribers: 215 },
+      { name: "Sat", revenue: 19500, subscribers: 189 },
+      { name: "Sun", revenue: 25300, subscribers: 234 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Daily performance this week"
+  },
+  month: {
+    conversations: { value: "4,829", change: "+15.4% from last month" },
+    ongoingChats: { value: "247", change: "+8.3% from last month" },
+    converted: { value: "463", change: "+67 this month" },
+    conversionRate: { value: "11.2%", change: "+2.1% from last month" },
+    revenueData: [
+      { name: "Week 1", revenue: 45200, subscribers: 412 },
+      { name: "Week 2", revenue: 52800, subscribers: 498 },
+      { name: "Week 3", revenue: 48600, subscribers: 456 },
+      { name: "Week 4", revenue: 61400, subscribers: 573 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Weekly performance this month"
+  },
+  quarter: {
+    conversations: { value: "14,832", change: "+22.8% from last quarter" },
+    ongoingChats: { value: "312", change: "+18.9% from last quarter" },
+    converted: { value: "1,387", change: "+245 this quarter" },
+    conversionRate: { value: "9.3%", change: "+1.8% from last quarter" },
+    revenueData: [
+      { name: "Jan", revenue: 127890, subscribers: 1234 },
+      { name: "Feb", revenue: 145620, subscribers: 1456 },
+      { name: "Mar", revenue: 162340, subscribers: 1589 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Monthly performance this quarter"
+  },
+  year: {
+    conversations: { value: "58,421", change: "+31.2% from last year" },
+    ongoingChats: { value: "394", change: "+25.7% from last year" },
+    converted: { value: "5,234", change: "+1,124 this year" },
+    conversionRate: { value: "8.9%", change: "+2.4% from last year" },
+    revenueData: [
+      { name: "Q1", revenue: 435850, subscribers: 4279 },
+      { name: "Q2", revenue: 523640, subscribers: 5123 },
+      { name: "Q3", revenue: 612890, subscribers: 5967 },
+      { name: "Q4", revenue: 578320, subscribers: 5634 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Quarterly performance this year"
+  },
+  all: {
+    conversations: { value: "147,892", change: "+892% all time growth" },
+    ongoingChats: { value: "456", change: "Peak performance" },
+    converted: { value: "12,463", change: "Total conversions" },
+    conversionRate: { value: "8.4%", change: "Average rate" },
+    revenueData: [
+      { name: "2022", revenue: 1234567, subscribers: 12890 },
+      { name: "2023", revenue: 1876543, subscribers: 18934 },
+      { name: "2024", revenue: 2150870, subscribers: 20823 },
+    ],
+    chartTitle: "Revenue & Subscriber Growth",
+    chartSubtitle: "Yearly performance all time"
+  }
+};
 
 const chatActivityData = [
   { name: "Emily", messages: 342, conversions: 28, revenue: 8200 },
@@ -88,6 +168,9 @@ const recentActivity = [
 
 export default function Dashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState("month");
+  
+  // Get current period data
+  const currentData = dataByPeriod[selectedPeriod as keyof typeof dataByPeriod];
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -126,29 +209,29 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatsCard
             title="Total Conversations"
-            value="4,829"
-            change="+15.4% from last month"
+            value={currentData.conversations.value}
+            change={currentData.conversations.change}
             changeType="positive"
             icon={<MessageSquare />}
           />
           <StatsCard
             title="Ongoing Chats"
-            value="247"
-            change="+8.3% from last hour"
+            value={currentData.ongoingChats.value}
+            change={currentData.ongoingChats.change}
             changeType="positive"
             icon={<Users />}
           />
           <StatsCard
             title="Converted"
-            value="2,463"
-            change="+312 this month"
+            value={currentData.converted.value}
+            change={currentData.converted.change}
             changeType="positive"
             icon={<MessageSquare />}
           />
           <StatsCard
             title="Conversion Rate"
-            value="11.2%"
-            change="+2.1% from last month"
+            value={currentData.conversionRate.value}
+            change={currentData.conversionRate.change}
             changeType="positive"
             icon={<Crown />}
           />
@@ -160,13 +243,13 @@ export default function Dashboard() {
           <Card className="p-6 bg-gradient-card border-card-border shadow-card">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-foreground">Revenue & Subscriber Growth</h3>
-                <p className="text-sm text-muted-foreground">Daily performance over the past week</p>
+                <h3 className="text-lg font-semibold text-foreground">{currentData.chartTitle}</h3>
+                <p className="text-sm text-muted-foreground">{currentData.chartSubtitle}</p>
               </div>
-              <Button variant="outline" size="sm">7 days</Button>
+              <Button variant="outline" size="sm">{selectedPeriod === 'today' ? 'Hours' : selectedPeriod === 'week' ? 'Days' : selectedPeriod === 'month' ? 'Weeks' : selectedPeriod === 'quarter' ? 'Months' : selectedPeriod === 'year' ? 'Quarters' : 'Years'}</Button>
             </div>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={revenueData}>
+              <LineChart data={currentData.revenueData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
                 <YAxis yAxisId="revenue" orientation="left" stroke="hsl(var(--muted-foreground))" />
