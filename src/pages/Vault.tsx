@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -152,6 +152,8 @@ const getFileIcon = (type: string) => {
 export default function Vault() {
   const [selectedModel, setSelectedModel] = useState(models[0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedContent = mockContent[selectedModel.id as keyof typeof mockContent] || [];
   
@@ -160,8 +162,31 @@ export default function Vault() {
   );
 
   const handleFileUpload = () => {
-    // File upload logic would go here
-    console.log("Upload files for", selectedModel.name);
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (files: FileList | null) => {
+    if (files) {
+      // File upload logic would go here
+      console.log("Upload files for", selectedModel.name, files);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = e.dataTransfer.files;
+    handleFileSelect(files);
   };
 
   return (
@@ -217,7 +242,22 @@ export default function Vault() {
 
           {/* Content Display - Right Side */}
           <div className="lg:col-span-3">
-            <Card className="h-full bg-gradient-card border-card-border shadow-card">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFileSelect(e.target.files)}
+              accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+            />
+            <Card 
+              className={`h-full bg-gradient-card border-card-border shadow-card transition-all ${
+                isDragOver ? "border-primary border-2 bg-primary/5" : ""
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
               <div className="p-4 border-b border-card-border">
                 <div className="flex items-center justify-between mb-4">
                   <div>
@@ -248,6 +288,16 @@ export default function Vault() {
 
               {/* Content List */}
               <div className="p-4 overflow-y-auto">
+                {isDragOver && (
+                  <div className="fixed inset-0 bg-primary/10 border-2 border-dashed border-primary rounded-lg flex items-center justify-center z-10">
+                    <div className="text-center">
+                      <Upload className="w-16 h-16 text-primary mx-auto mb-4" />
+                      <p className="text-lg font-semibold text-primary">Drop files to upload</p>
+                      <p className="text-sm text-muted-foreground">Release to upload to {selectedModel.name}'s vault</p>
+                    </div>
+                  </div>
+                )}
+                
                 {filteredContent.length === 0 ? (
                   <div className="text-center py-12">
                     <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -257,10 +307,15 @@ export default function Vault() {
                     <p className="text-sm text-muted-foreground mb-4">
                       Upload photos, videos, and documents for {selectedModel.name}
                     </p>
-                    <Button onClick={handleFileUpload} variant="outline">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Upload First Content
-                    </Button>
+                    <div className="space-y-2">
+                      <Button onClick={handleFileUpload} variant="outline">
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload First Content
+                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Or drag and drop files here
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-3">
