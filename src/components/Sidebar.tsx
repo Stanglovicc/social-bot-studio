@@ -72,17 +72,17 @@ export function Sidebar() {
   return (
     <div className="flex h-screen w-64 flex-col glass-sidebar rounded-r-3xl">
       {/* Logo */}
-      <div className="flex h-16 items-center px-6 border-b border-sidebar-border">
-        <div className="flex items-center space-x-3">
-          <div className="w-16 h-16 flex items-center justify-center">
+      <div className="flex h-16 items-center px-4 border-b border-sidebar-border">
+        <div className="flex items-center space-x-2">
+          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
             <img 
               src="/lovable-uploads/e0e4ec52-be30-4715-aa76-de0eeba42a9f.png" 
               alt="Bull Logo" 
-              className="w-16 h-16 object-contain"
+              className="w-12 h-12 object-contain"
             />
           </div>
-          <div>
-            <h1 className="text-lg font-semibold text-sidebar-foreground">Bullseye ChatBot</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-base font-semibold text-sidebar-foreground truncate">Bullseye ChatBot</h1>
             <p className="text-xs text-muted-foreground">Management Hub</p>
           </div>
         </div>
