@@ -68,6 +68,66 @@
     --sidebar-border: 220 20% 12%;
     --sidebar-ring: 210 100% 60%;
   }
+  }
+
+  .light {
+    /* Core Colors - Light Blue Theme */
+    --background: 200 60% 96%;
+    --foreground: 200 15% 15%;
+
+    /* Cards & Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 200 15% 15%;
+    --card-border: 200 30% 85%;
+
+    /* Interactive Elements */
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 210 100% 60%;
+
+    --secondary: 200 30% 90%;
+    --secondary-foreground: 200 15% 25%;
+
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Status Colors */
+    --success: 210 100% 50%;
+    --success-foreground: 0 0% 98%;
+    
+    --warning: 35 100% 45%;
+    --warning-foreground: 0 0% 98%;
+    
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Utility Colors */
+    --muted: 200 20% 92%;
+    --muted-foreground: 200 10% 45%;
+
+    --border: 200 30% 85%;
+    --input: 0 0% 100%;
+    --ring: 210 100% 50%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%), hsl(210 100% 60%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(200 15% 98%));
+    --gradient-glow: linear-gradient(90deg, hsl(210 100% 50% / 0.1), hsl(210 100% 60% / 0.1));
+
+    /* Shadows */
+    --shadow-card: 0 8px 32px hsl(210 100% 50% / 0.1);
+    --shadow-glow: 0 0 30px hsl(210 100% 50% / 0.15);
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 200 15% 25%;
+    --sidebar-primary: 210 100% 50%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 200 20% 92%;
+    --sidebar-accent-foreground: 200 15% 25%;
+    --sidebar-border: 200 30% 85%;
+    --sidebar-ring: 210 100% 50%;
+  }
 }
 
 @layer base {

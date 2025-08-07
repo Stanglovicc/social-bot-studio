@@ -24,6 +24,7 @@ export default function Settings() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [adsConnectionStatus, setAdsConnectionStatus] = useState("connected");
   const [openaiConnectionStatus, setOpenaiConnectionStatus] = useState("connected");
+  const [theme, setTheme] = useState("dark");
 
   return (
     <DashboardLayout>
@@ -281,8 +282,41 @@ export default function Settings() {
 
               <div className="space-y-6">
                 <div>
-                  <Label className="text-sm font-medium text-foreground">Color Scheme</Label>
-                  <Select defaultValue="dark">
+                  <Label className="text-sm font-medium text-foreground mb-3 block">Theme Mode</Label>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Card 
+                      className={`p-4 cursor-pointer transition-all ${theme === 'dark' ? 'ring-2 ring-primary' : ''}`}
+                      onClick={() => setTheme('dark')}
+                    >
+                      <div className="flex flex-col items-center space-y-2">
+                        <div className="w-12 h-8 bg-black rounded border"></div>
+                        <span className="text-sm text-foreground">Dark</span>
+                      </div>
+                    </Card>
+                    <Card 
+                      className={`p-4 cursor-pointer transition-all ${theme === 'light' ? 'ring-2 ring-primary' : ''}`}
+                      onClick={() => setTheme('light')}
+                    >
+                      <div className="flex flex-col items-center space-y-2">
+                        <div className="w-12 h-8 bg-white rounded border border-border"></div>
+                        <span className="text-sm text-foreground">Light</span>
+                      </div>
+                    </Card>
+                    <Card 
+                      className={`p-4 cursor-pointer transition-all ${theme === 'auto' ? 'ring-2 ring-primary' : ''}`}
+                      onClick={() => setTheme('auto')}
+                    >
+                      <div className="flex flex-col items-center space-y-2">
+                        <div className="w-12 h-8 bg-gradient-to-r from-black to-white rounded border"></div>
+                        <span className="text-sm text-foreground">Auto</span>
+                      </div>
+                    </Card>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-foreground">Color Scheme (Legacy)</Label>
+                  <Select value={theme} onValueChange={setTheme}>
                     <SelectTrigger className="mt-2">
                       <SelectValue />
                     </SelectTrigger>
