@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -121,8 +122,9 @@ export default function Models() {
   };
 
   return (
-    <div className="flex h-full">
-      {/* Left Sidebar - Model List */}
+    <DashboardLayout>
+      <div className="flex h-full">
+        {/* Left Sidebar - Model List */}
       <div className="w-80 border-r border-border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-foreground">Models</h2>
@@ -363,6 +365,7 @@ export default function Models() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
