@@ -41,16 +41,6 @@ const navigation = [
     icon: Vault,
   },
   {
-    name: "Financials",
-    href: "/financials",
-    icon: TrendingUp,
-  },
-  {
-    name: "Team Management",
-    href: "/team",
-    icon: ScrollText,
-  },
-  {
     name: "Reports",
     href: "/reports",
     icon: TestTube,
