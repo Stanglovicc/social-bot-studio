@@ -129,10 +129,10 @@ const chatActivityData = [
 ];
 
 const modelRevenueData = [
-  { name: "Emily", value: 35, revenue: 8200, color: "#e11d48" },
-  { name: "Mia", value: 28, revenue: 6400, color: "#f59e0b" },
-  { name: "Sarah", value: 20, revenue: 3800, color: "#10b981" },
-  { name: "Luna", value: 17, revenue: 2100, color: "#3b82f6" },
+  { name: "Emily", value: 35, revenue: 8200, color: "hsl(210 100% 60%)" },
+  { name: "Mia", value: 28, revenue: 6400, color: "hsl(220 80% 40%)" },
+  { name: "Sarah", value: 20, revenue: 3800, color: "hsl(210 90% 50%)" },
+  { name: "Luna", value: 17, revenue: 2100, color: "hsl(220 70% 30%)" },
 ];
 
 const recentActivity = [
@@ -265,7 +265,7 @@ export default function Dashboard() {
                   yAxisId="revenue"
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="hsl(var(--primary))" 
+                  stroke="hsl(210 100% 60%)" 
                   strokeWidth={3}
                   name="Revenue ($)"
                 />
@@ -273,7 +273,7 @@ export default function Dashboard() {
                   yAxisId="subscribers"
                   type="monotone" 
                   dataKey="subscribers" 
-                  stroke="hsl(var(--success))" 
+                  stroke="hsl(220 80% 40%)" 
                   strokeWidth={2}
                   name="New Subscribers"
                 />
@@ -302,8 +302,8 @@ export default function Dashboard() {
                     borderRadius: "var(--radius)",
                   }}
                 />
-                <Bar dataKey="messages" fill="hsl(var(--primary))" radius={[2, 2, 0, 0]} name="Messages" />
-                <Bar dataKey="conversions" fill="hsl(var(--success))" radius={[2, 2, 0, 0]} name="Conversions" />
+                <Bar dataKey="messages" fill="hsl(210 100% 60%)" radius={[2, 2, 0, 0]} name="Messages" />
+                <Bar dataKey="conversions" fill="hsl(220 80% 40%)" radius={[2, 2, 0, 0]} name="Conversions" />
               </BarChart>
             </ResponsiveContainer>
           </Card>
