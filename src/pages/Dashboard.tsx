@@ -123,9 +123,9 @@ export default function Dashboard() {
             icon={<Users />}
           />
           <StatsCard
-            title="Messages Today"
-            value="1,856"
-            change="+24.1% from yesterday"
+            title="Converted All Time"
+            value="2,463"
+            change="+312 this month"
             changeType="positive"
             icon={<MessageSquare />}
           />
