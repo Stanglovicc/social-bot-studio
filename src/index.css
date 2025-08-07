@@ -44,9 +44,9 @@
     --input: 220 15% 15% / 0.8;
     --ring: 210 100% 60%;
 
-    /* Popover/Dropdown Colors - Solid Backgrounds */
-    --popover: 220 15% 12%;
-    --popover-foreground: 0 0% 95%;
+    /* Popover/Dropdown Colors - Completely Solid */
+    --popover: 220 15% 10%;
+    --popover-foreground: 0 0% 98%;
 
     /* Gradients with Transparency */
     --gradient-primary: linear-gradient(135deg, hsl(210 100% 60% / 0.9), hsl(210 100% 70% / 0.9));
@@ -112,9 +112,9 @@
     --input: 0 0% 100% / 0.8;
     --ring: 210 100% 50%;
 
-    /* Popover/Dropdown Colors - Solid Backgrounds */
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 15% 15%;
+    /* Popover/Dropdown Colors - Completely Solid */
+    --popover: 0 0% 98%;
+    --popover-foreground: 200 15% 10%;
 
     /* Gradients with Transparency */
     --gradient-primary: linear-gradient(135deg, hsl(210 100% 50% / 0.9), hsl(210 100% 60% / 0.9));
