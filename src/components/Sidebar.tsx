@@ -28,11 +28,6 @@ const navigation = [
     name: "Models",
     href: "/models",
     icon: Bot,
-    children: [
-      { name: "All Models", href: "/models" },
-      { name: "Add New Model", href: "/models/add" },
-      { name: "Model Performance", href: "/models/performance" },
-    ],
   },
   {
     name: "Chatter Workspace",
@@ -73,7 +68,7 @@ const navigation = [
 
 export function Sidebar() {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Models", "Chatter Workspace"]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Chatter Workspace"]);
 
   const toggleExpanded = (name: string) => {
     setExpandedItems(prev =>
