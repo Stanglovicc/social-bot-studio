@@ -116,9 +116,9 @@ export default function Dashboard() {
             icon={<MessageSquare />}
           />
           <StatsCard
-            title="Active Subscribers"
-            value="3,247"
-            change="+12.8% from last month"
+            title="Ongoing Chats"
+            value="247"
+            change="+8.3% from last hour"
             changeType="positive"
             icon={<Users />}
           />
