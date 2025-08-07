@@ -121,12 +121,44 @@ const dataByPeriod = {
   }
 };
 
-const chatActivityData = [
-  { name: "Emily", messages: 342, conversions: 28, revenue: 8200 },
-  { name: "Mia", messages: 298, conversions: 22, revenue: 6400 },
-  { name: "Sarah", messages: 156, conversions: 15, revenue: 3800 },
-  { name: "Luna", messages: 89, conversions: 8, revenue: 2100 },
-];
+const chatActivityDataByPeriod = {
+  today: [
+    { name: "Emily", messages: 342, conversions: 28, revenue: 8200 },
+    { name: "Mia", messages: 298, conversions: 22, revenue: 6400 },
+    { name: "Sarah", messages: 156, conversions: 15, revenue: 3800 },
+    { name: "Luna", messages: 89, conversions: 8, revenue: 2100 },
+  ],
+  week: [
+    { name: "Emily", messages: 2394, conversions: 196, revenue: 57400 },
+    { name: "Mia", messages: 2086, conversions: 154, revenue: 44800 },
+    { name: "Sarah", messages: 1092, conversions: 105, revenue: 26600 },
+    { name: "Luna", messages: 623, conversions: 56, revenue: 14700 },
+  ],
+  month: [
+    { name: "Emily", messages: 10260, conversions: 842, revenue: 246200 },
+    { name: "Mia", messages: 8934, conversions: 658, revenue: 192400 },
+    { name: "Sarah", messages: 4680, conversions: 450, revenue: 114200 },
+    { name: "Luna", messages: 2673, conversions: 240, revenue: 63100 },
+  ],
+  quarter: [
+    { name: "Emily", messages: 30780, conversions: 2526, revenue: 738600 },
+    { name: "Mia", messages: 26802, conversions: 1974, revenue: 577200 },
+    { name: "Sarah", messages: 14040, conversions: 1350, revenue: 342600 },
+    { name: "Luna", messages: 8019, conversions: 720, revenue: 189300 },
+  ],
+  year: [
+    { name: "Emily", messages: 123120, conversions: 10104, revenue: 2954400 },
+    { name: "Mia", messages: 107208, conversions: 7896, revenue: 2308800 },
+    { name: "Sarah", messages: 56160, conversions: 5400, revenue: 1370400 },
+    { name: "Luna", messages: 32076, conversions: 2880, revenue: 757200 },
+  ],
+  all: [
+    { name: "Emily", messages: 246240, conversions: 20208, revenue: 5908800 },
+    { name: "Mia", messages: 214416, conversions: 15792, revenue: 4617600 },
+    { name: "Sarah", messages: 112320, conversions: 10800, revenue: 2740800 },
+    { name: "Luna", messages: 64152, conversions: 5760, revenue: 1514400 },
+  ]
+};
 
 const modelRevenueData = [
   { name: "Emily", value: 35, revenue: 8200, color: "hsl(210 100% 60%)" },
@@ -171,6 +203,7 @@ export default function Dashboard() {
   
   // Get current period data
   const currentData = dataByPeriod[selectedPeriod as keyof typeof dataByPeriod];
+  const currentChatData = chatActivityDataByPeriod[selectedPeriod as keyof typeof chatActivityDataByPeriod];
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -288,10 +321,10 @@ export default function Dashboard() {
                 <h3 className="text-lg font-semibold text-foreground">Model Chat Performance</h3>
                 <p className="text-sm text-muted-foreground">Messages and conversions by model</p>
               </div>
-              <Button variant="outline" size="sm">Today</Button>
+              <Button variant="outline" size="sm">{selectedPeriod === 'today' ? 'Today' : selectedPeriod === 'week' ? 'This Week' : selectedPeriod === 'month' ? 'This Month' : selectedPeriod === 'quarter' ? 'This Quarter' : selectedPeriod === 'year' ? 'This Year' : 'All Time'}</Button>
             </div>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chatActivityData}>
+              <BarChart data={currentChatData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
                 <YAxis stroke="hsl(var(--muted-foreground))" />
