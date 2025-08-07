@@ -31,25 +31,41 @@ export default function Settings() {
     return 'dark';
   });
 
-  // Apply theme when it changes
+  // Apply theme only when user manually changes it, not on page load
   useEffect(() => {
+    // Skip applying theme on initial load
+    const isInitialLoad = !document.documentElement.classList.contains('dark') && 
+                          !document.documentElement.classList.contains('light');
+    
+    if (isInitialLoad) {
+      // Just set the current theme state without applying changes
+      const currentTheme = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+      setTheme(currentTheme);
+      return;
+    }
+  }, []);
+
+  // Separate function to apply theme changes only when user selects a new theme
+  const applyThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+    
     const root = document.documentElement;
     
     // Remove all theme classes
     root.classList.remove('dark', 'light');
     
     // Apply the selected theme
-    if (theme === 'auto') {
+    if (newTheme === 'auto') {
       // Use system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.classList.add(prefersDark ? 'dark' : 'light');
     } else {
-      root.classList.add(theme);
+      root.classList.add(newTheme);
     }
     
     // Save to localStorage
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    localStorage.setItem('theme', newTheme);
+  };
 
   return (
     <DashboardLayout>
@@ -311,7 +327,7 @@ export default function Settings() {
                   <div className="grid grid-cols-3 gap-3">
                     <Card 
                       className={`p-4 cursor-pointer transition-all ${theme === 'dark' ? 'ring-2 ring-primary' : ''}`}
-                      onClick={() => setTheme('dark')}
+                      onClick={() => applyThemeChange('dark')}
                     >
                       <div className="flex flex-col items-center space-y-2">
                         <div className="w-12 h-8 bg-black rounded border"></div>
@@ -320,7 +336,7 @@ export default function Settings() {
                     </Card>
                     <Card 
                       className={`p-4 cursor-pointer transition-all ${theme === 'light' ? 'ring-2 ring-primary' : ''}`}
-                      onClick={() => setTheme('light')}
+                      onClick={() => applyThemeChange('light')}
                     >
                       <div className="flex flex-col items-center space-y-2">
                         <div className="w-12 h-8 bg-white rounded border border-border"></div>
@@ -329,7 +345,7 @@ export default function Settings() {
                     </Card>
                     <Card 
                       className={`p-4 cursor-pointer transition-all ${theme === 'auto' ? 'ring-2 ring-primary' : ''}`}
-                      onClick={() => setTheme('auto')}
+                      onClick={() => applyThemeChange('auto')}
                     >
                       <div className="flex flex-col items-center space-y-2">
                         <div className="w-12 h-8 bg-gradient-to-r from-black to-white rounded border"></div>
@@ -341,7 +357,7 @@ export default function Settings() {
 
                 <div>
                   <Label className="text-sm font-medium text-foreground">Color Scheme (Legacy)</Label>
-                  <Select value={theme} onValueChange={setTheme}>
+                  <Select value={theme} onValueChange={applyThemeChange}>
                     <SelectTrigger className="mt-2">
                       <SelectValue />
                     </SelectTrigger>
