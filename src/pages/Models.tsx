@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Users,
   Plus,
-  DollarSign,
-  MessageSquare,
-  TrendingUp,
   Settings,
-  Camera,
   Search,
-  Star,
-  Eye,
+  Save,
+  User,
+  MessageCircle,
+  Heart,
+  Sparkles,
 } from "lucide-react";
 
 // Mock data for models
@@ -24,14 +25,19 @@ const modelsData = [
     username: "@emily_rose",
     avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
     tier: "Premium",
-    subscribers: 15420,
-    monthlyRevenue: 28500,
     status: "Active",
-    chatPerformance: 89,
     lastActive: "2 hours ago",
-    growth: "+12.5%",
-    dailyRevenue: 1240,
-    totalMessages: 342,
+    personality: {
+      name: "Emily Rose",
+      age: "23",
+      location: "Miami, FL",
+      occupation: "Content Creator & Model",
+      interests: ["Fashion", "Fitness", "Travel", "Photography"],
+      personality: "Flirty, confident, and adventurous. I love connecting with people and sharing my lifestyle.",
+      communicationStyle: "Playful and engaging, uses emojis frequently, responds with enthusiasm",
+      background: "Originally from California, moved to Miami for modeling. Loves beach life and sunset photography.",
+      specialties: ["Custom content", "Role-play scenarios", "GFE (Girlfriend Experience)"],
+    },
   },
   {
     id: 2,
@@ -39,14 +45,19 @@ const modelsData = [
     username: "@mia_santos",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
     tier: "Basic",
-    subscribers: 8750,
-    monthlyRevenue: 12800,
     status: "Active",
-    chatPerformance: 76,
     lastActive: "5 minutes ago",
-    growth: "+8.3%",
-    dailyRevenue: 580,
-    totalMessages: 298,
+    personality: {
+      name: "Mia Santos",
+      age: "25",
+      location: "Los Angeles, CA",
+      occupation: "Yoga Instructor & Content Creator",
+      interests: ["Yoga", "Wellness", "Cooking", "Nature"],
+      personality: "Sweet, caring, and health-conscious. Always positive and loves helping others feel good.",
+      communicationStyle: "Warm and nurturing, uses heart emojis, focuses on wellness and positivity",
+      background: "Certified yoga instructor who started content creation to share wellness tips and connect with like-minded people.",
+      specialties: ["Yoga sessions", "Wellness advice", "Meditation content"],
+    },
   },
   {
     id: 3,
@@ -54,14 +65,19 @@ const modelsData = [
     username: "@sofia_kim",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
     tier: "Premium",
-    subscribers: 22100,
-    monthlyRevenue: 45200,
     status: "Active",
-    chatPerformance: 94,
     lastActive: "1 hour ago",
-    growth: "+18.7%",
-    dailyRevenue: 1680,
-    totalMessages: 567,
+    personality: {
+      name: "Sofia Kim",
+      age: "22",
+      location: "New York, NY",
+      occupation: "Art Student & Model",
+      interests: ["Art", "Music", "Fashion", "Coffee"],
+      personality: "Creative, intellectual, and mysterious. Loves deep conversations and artistic expression.",
+      communicationStyle: "Thoughtful and artistic, shares creative insights, uses aesthetic emojis",
+      background: "Fine arts student in NYC, creates content to fund her education and share her artistic journey.",
+      specialties: ["Artistic content", "Behind-the-scenes", "Creative collaborations"],
+    },
   },
   {
     id: 4,
@@ -69,21 +85,40 @@ const modelsData = [
     username: "@luna_martinez",
     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
     tier: "Basic",
-    subscribers: 4320,
-    monthlyRevenue: 7800,
     status: "Inactive",
-    chatPerformance: 52,
     lastActive: "2 days ago",
-    growth: "-2.1%",
-    dailyRevenue: 290,
-    totalMessages: 89,
+    personality: {
+      name: "Luna Martinez",
+      age: "24",
+      location: "Austin, TX",
+      occupation: "Musician & Content Creator",
+      interests: ["Music", "Gaming", "Movies", "Food"],
+      personality: "Fun-loving, quirky, and down-to-earth. Loves to laugh and make others smile.",
+      communicationStyle: "Casual and fun, uses gaming references, very relatable and approachable",
+      background: "Part-time musician who creates content for fun and to connect with fans of her music.",
+      specialties: ["Music content", "Gaming streams", "Casual conversations"],
+    },
   },
 ];
 
 export default function Models() {
   const [selectedModel, setSelectedModel] = useState<number | null>(1);
+  const [editedPersonality, setEditedPersonality] = useState<any>(null);
   
   const selectedModelData = modelsData.find(m => m.id === selectedModel);
+
+  // Initialize edited personality when model changes
+  useEffect(() => {
+    if (selectedModelData) {
+      setEditedPersonality(selectedModelData.personality);
+    }
+  }, [selectedModel, selectedModelData]);
+
+  const handleSavePersonality = () => {
+    // Here you would save the personality data
+    console.log("Saving personality for model:", selectedModel, editedPersonality);
+    // You can add your save logic here
+  };
 
   return (
     <div className="flex h-full">
@@ -156,7 +191,7 @@ export default function Models() {
                   className="w-20 h-20 rounded-full object-cover"
                 />
                 <div>
-                  <h1 className="text-3xl font-bold text-foreground">{selectedModelData.name}</h1>
+                  <h1 className="text-3xl font-bold text-foreground">{editedPersonality?.name || selectedModelData.personality.name}</h1>
                   <p className="text-lg text-muted-foreground">{selectedModelData.username}</p>
                   <div className="flex items-center space-x-4 mt-2">
                     <div className="flex items-center space-x-2">
@@ -170,155 +205,154 @@ export default function Models() {
                   </div>
                 </div>
               </div>
-              <div className="flex space-x-3">
-                <Button variant="outline">
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Profile
-                </Button>
-                <Button className="bg-gradient-primary">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Edit Profile
-                </Button>
+              <Button onClick={handleSavePersonality} className="bg-gradient-primary">
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
+
+            {/* Personality Settings */}
+            {editedPersonality && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Basic Information */}
+                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <User className="w-5 h-5 text-primary" />
+                    <h3 className="text-lg font-semibold text-foreground">Basic Information</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="name" className="text-sm font-medium text-foreground">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={editedPersonality.name}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, name: e.target.value})}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="age" className="text-sm font-medium text-foreground">Age</Label>
+                        <Input
+                          id="age"
+                          value={editedPersonality.age}
+                          onChange={(e) => setEditedPersonality({...editedPersonality, age: e.target.value})}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="location" className="text-sm font-medium text-foreground">Location</Label>
+                        <Input
+                          id="location"
+                          value={editedPersonality.location}
+                          onChange={(e) => setEditedPersonality({...editedPersonality, location: e.target.value})}
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="occupation" className="text-sm font-medium text-foreground">Occupation</Label>
+                      <Input
+                        id="occupation"
+                        value={editedPersonality.occupation}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, occupation: e.target.value})}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="interests" className="text-sm font-medium text-foreground">Interests (comma separated)</Label>
+                      <Input
+                        id="interests"
+                        value={editedPersonality.interests.join(', ')}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, interests: e.target.value.split(', ')})}
+                        className="mt-1"
+                        placeholder="Fashion, Fitness, Travel..."
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Personality & Communication */}
+                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Heart className="w-5 h-5 text-primary" />
+                    <h3 className="text-lg font-semibold text-foreground">Personality & Style</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="personality" className="text-sm font-medium text-foreground">Personality Description</Label>
+                      <Textarea
+                        id="personality"
+                        value={editedPersonality.personality}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, personality: e.target.value})}
+                        className="mt-1 min-h-[100px]"
+                        placeholder="Describe the personality traits, characteristics, and vibe..."
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="communication" className="text-sm font-medium text-foreground">Communication Style</Label>
+                      <Textarea
+                        id="communication"
+                        value={editedPersonality.communicationStyle}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, communicationStyle: e.target.value})}
+                        className="mt-1 min-h-[80px]"
+                        placeholder="How does this model communicate? Tone, emoji usage, response style..."
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Background & Story */}
+                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <MessageCircle className="w-5 h-5 text-primary" />
+                    <h3 className="text-lg font-semibold text-foreground">Background & Story</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="background" className="text-sm font-medium text-foreground">Background Story</Label>
+                      <Textarea
+                        id="background"
+                        value={editedPersonality.background}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, background: e.target.value})}
+                        className="mt-1 min-h-[120px]"
+                        placeholder="Tell the model's backstory, how they got started, life experiences..."
+                      />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Specialties & Services */}
+                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    <h3 className="text-lg font-semibold text-foreground">Specialties & Services</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="specialties" className="text-sm font-medium text-foreground">Specialties (comma separated)</Label>
+                      <Input
+                        id="specialties"
+                        value={editedPersonality.specialties.join(', ')}
+                        onChange={(e) => setEditedPersonality({...editedPersonality, specialties: e.target.value.split(', ')})}
+                        className="mt-1"
+                        placeholder="Custom content, Role-play, GFE..."
+                      />
+                    </div>
+                    <div className="bg-accent/5 p-4 rounded-lg">
+                      <h4 className="font-medium text-foreground mb-2">Current Specialties:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {editedPersonality.specialties.map((specialty: string, index: number) => (
+                          <Badge key={index} variant="secondary" className="bg-primary/10 text-primary">
+                            {specialty}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
               </div>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Subscribers</p>
-                    <p className="text-2xl font-bold text-foreground">{selectedModelData.subscribers.toLocaleString()}</p>
-                    <p className="text-sm text-success">{selectedModelData.growth}</p>
-                  </div>
-                  <Users className="w-8 h-8 text-primary" />
-                </div>
-              </Card>
-              
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Monthly Revenue</p>
-                    <p className="text-2xl font-bold text-success">${selectedModelData.monthlyRevenue.toLocaleString()}</p>
-                    <p className="text-sm text-muted-foreground">Daily: ${selectedModelData.dailyRevenue}</p>
-                  </div>
-                  <DollarSign className="w-8 h-8 text-success" />
-                </div>
-              </Card>
-              
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Chat Performance</p>
-                    <p className="text-2xl font-bold text-foreground">{selectedModelData.chatPerformance}%</p>
-                    <p className="text-sm text-muted-foreground">{selectedModelData.totalMessages} messages</p>
-                  </div>
-                  <MessageSquare className="w-8 h-8 text-primary" />
-                </div>
-              </Card>
-
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Performance</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {selectedModelData.chatPerformance > 80 ? 'Excellent' : 
-                       selectedModelData.chatPerformance > 60 ? 'Good' : 'Needs Work'}
-                    </p>
-                    <p className="text-sm text-muted-foreground">Overall rating</p>
-                  </div>
-                  <Star className="w-8 h-8 text-warning" />
-                </div>
-              </Card>
-            </div>
-
-            {/* Content Sections */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Recent Activity */}
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3 p-3 bg-success/5 rounded-lg">
-                    <div className="w-3 h-3 bg-success rounded-full"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-foreground">New subscription received</p>
-                      <p className="text-xs text-muted-foreground">2 hours ago</p>
-                    </div>
-                    <span className="text-sm font-medium text-success">+$29.99</span>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
-                    <div className="w-3 h-3 bg-primary rounded-full"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-foreground">PPV message sent</p>
-                      <p className="text-xs text-muted-foreground">4 hours ago</p>
-                    </div>
-                    <span className="text-sm font-medium text-primary">45 sent</span>
-                  </div>
-                  <div className="flex items-center space-x-3 p-3 bg-warning/5 rounded-lg">
-                    <div className="w-3 h-3 bg-warning rounded-full"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-foreground">Content uploaded</p>
-                      <p className="text-xs text-muted-foreground">6 hours ago</p>
-                    </div>
-                    <span className="text-sm font-medium text-warning">3 photos</span>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Assigned Team */}
-              <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Assigned Team</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4 p-3 bg-accent/5 rounded-lg">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <MessageSquare className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Sarah Johnson</p>
-                      <p className="text-xs text-muted-foreground">Lead Chatter</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-success">89% conv rate</p>
-                      <p className="text-xs text-muted-foreground">Online now</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4 p-3 bg-accent/5 rounded-lg">
-                    <div className="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center">
-                      <Camera className="w-5 h-5 text-secondary" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Mike Rodriguez</p>
-                      <p className="text-xs text-muted-foreground">Content Manager</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-foreground">12 uploads</p>
-                      <p className="text-xs text-muted-foreground">This week</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-4 p-3 bg-accent/5 rounded-lg">
-                    <div className="w-10 h-10 bg-warning/10 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-warning" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-foreground">Alex Chen</p>
-                      <p className="text-xs text-muted-foreground">Analytics Manager</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-foreground">Weekly report</p>
-                      <p className="text-xs text-muted-foreground">Due tomorrow</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* Performance Chart Placeholder */}
-            <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-              <h3 className="text-lg font-semibold text-foreground mb-4">Performance Overview</h3>
-              <div className="h-64 bg-accent/5 rounded-lg flex items-center justify-center">
-                <p className="text-muted-foreground">Revenue and engagement charts will be displayed here</p>
-              </div>
-            </Card>
+            )}
           </div>
         ) : (
           <div className="flex items-center justify-center h-full">
