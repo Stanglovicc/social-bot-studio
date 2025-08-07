@@ -123,7 +123,7 @@ export default function Dashboard() {
             icon={<Users />}
           />
           <StatsCard
-            title="Converted All Time"
+            title="Converted"
             value="2,463"
             change="+312 this month"
             changeType="positive"
