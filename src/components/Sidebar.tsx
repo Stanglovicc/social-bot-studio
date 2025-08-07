@@ -82,7 +82,7 @@ export function Sidebar() {
             />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-sidebar-foreground">Bullseye Bot</h1>
+            <h1 className="text-lg font-semibold text-sidebar-foreground">Bullseye ChatBot</h1>
             <p className="text-xs text-muted-foreground">Management Hub</p>
           </div>
         </div>
