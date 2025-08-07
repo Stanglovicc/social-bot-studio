@@ -11,9 +11,9 @@ import {
   Settings,
   ChevronDown,
   ChevronRight,
-  Instagram,
-  Twitter,
-  Camera,
+  Calendar,
+  Users,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -25,39 +25,43 @@ const navigation = [
     icon: BarChart3,
   },
   {
-    name: "Chatbot",
-    href: "/chatbot",
+    name: "Models",
+    href: "/models",
     icon: Bot,
     children: [
-      { name: "Platform Selector", href: "/chatbot/platforms" },
-      { name: "Model Selector", href: "/chatbot/models" },
-      { name: "Bot Settings", href: "/chatbot/settings" },
-      { name: "AdsPower Accounts", href: "/chatbot/adspower" },
+      { name: "All Models", href: "/models" },
+      { name: "Add New Model", href: "/models/add" },
+      { name: "Model Performance", href: "/models/performance" },
     ],
   },
   {
-    name: "Content Vault",
-    href: "/content",
+    name: "Chatter Workspace",
+    href: "/chatters",
     icon: FolderOpen,
     children: [
-      { name: "Emily", href: "/content/emily" },
-      { name: "Mia", href: "/content/mia" },
-      { name: "Add New Model", href: "/content/add" },
+      { name: "Active Chats", href: "/chatters" },
+      { name: "Message Templates", href: "/chatters/templates" },
+      { name: "Subscriber Notes", href: "/chatters/notes" },
     ],
   },
   {
-    name: "Statistics",
-    href: "/statistics",
+    name: "Content Calendar",
+    href: "/calendar",
+    icon: Calendar,
+  },
+  {
+    name: "Financials",
+    href: "/financials",
     icon: TrendingUp,
   },
   {
-    name: "Logs",
-    href: "/logs",
+    name: "Team Management",
+    href: "/team",
     icon: ScrollText,
   },
   {
-    name: "Tester",
-    href: "/tester",
+    name: "Reports",
+    href: "/reports",
     icon: TestTube,
   },
   {
@@ -69,7 +73,7 @@ const navigation = [
 
 export function Sidebar() {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Chatbot", "Content Vault"]);
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Models", "Chatter Workspace"]);
 
   const toggleExpanded = (name: string) => {
     setExpandedItems(prev =>
@@ -93,8 +97,8 @@ export function Sidebar() {
             <Bot className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-sidebar-foreground">AI Dashboard</h1>
-            <p className="text-xs text-muted-foreground">Chatbot Manager</p>
+            <h1 className="text-lg font-semibold text-sidebar-foreground">OF Agency</h1>
+            <p className="text-xs text-muted-foreground">Management Hub</p>
           </div>
         </div>
       </div>
@@ -164,17 +168,17 @@ export function Sidebar() {
       {/* Status indicators */}
       <div className="p-4 border-t border-sidebar-border space-y-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">AdsPower</span>
+          <span className="text-muted-foreground">Google Drive</span>
           <div className="flex items-center space-x-1">
             <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-success">Connected</span>
+            <span className="text-success">Synced</span>
           </div>
         </div>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-muted-foreground">OpenAI API</span>
+          <span className="text-muted-foreground">OnlyFans API</span>
           <div className="flex items-center space-x-1">
-            <div className="w-2 h-2 bg-success rounded-full"></div>
-            <span className="text-success">Active</span>
+            <div className="w-2 h-2 bg-warning rounded-full"></div>
+            <span className="text-warning">Limited</span>
           </div>
         </div>
       </div>
