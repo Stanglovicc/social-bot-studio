@@ -24,7 +24,7 @@ export function StatsCard({ title, value, change, changeType = "neutral", icon, 
   };
 
   return (
-    <Card className={cn("p-6 bg-gradient-card border-card-border shadow-card", className)}>
+    <Card className={cn("p-6 glass-card shadow-card", className)}>
       <div className="flex items-center justify-between">
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>

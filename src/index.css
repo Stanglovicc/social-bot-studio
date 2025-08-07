@@ -6,14 +6,14 @@
 
 @layer base {
   :root {
-    /* Core Colors - Blue and Black Theme (Dark) */
-    --background: 220 15% 8%;
+    /* Core Colors - Blue and Black Theme (Dark) with Transparency */
+    --background: 220 15% 8% / 0.95;
     --foreground: 0 0% 95%;
 
-    /* Cards & Surfaces */
-    --card: 220 15% 12%;
+    /* Cards & Surfaces with Glass Effect */
+    --card: 220 15% 12% / 0.8;
     --card-foreground: 0 0% 95%;
-    --card-border: 220 20% 18%;
+    --card-border: 220 20% 18% / 0.6;
 
     /* Interactive Elements */
     --primary: 210 100% 60%;
@@ -36,22 +36,22 @@
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Utility Colors */
-    --muted: 220 15% 15%;
+    /* Utility Colors with Transparency */
+    --muted: 220 15% 15% / 0.7;
     --muted-foreground: 220 10% 60%;
 
-    --border: 220 20% 18%;
-    --input: 220 15% 15%;
+    --border: 220 20% 18% / 0.6;
+    --input: 220 15% 15% / 0.8;
     --ring: 210 100% 60%;
 
-    /* Popover/Dropdown Colors */
-    --popover: 220 15% 12%;
+    /* Popover/Dropdown Colors with Glass Effect */
+    --popover: 220 15% 12% / 0.9;
     --popover-foreground: 0 0% 95%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 60%), hsl(210 100% 70%));
-    --gradient-card: linear-gradient(145deg, hsl(220 15% 12%), hsl(220 15% 14%));
-    --gradient-glow: linear-gradient(90deg, hsl(210 100% 60% / 0.1), hsl(210 100% 70% / 0.1));
+    /* Gradients with Transparency */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 60% / 0.9), hsl(210 100% 70% / 0.9));
+    --gradient-card: linear-gradient(145deg, hsl(220 15% 12% / 0.8), hsl(220 15% 14% / 0.8));
+    --gradient-glow: linear-gradient(90deg, hsl(210 100% 60% / 0.2), hsl(210 100% 70% / 0.2));
 
     /* Shadows */
     --shadow-card: 0 8px 32px hsl(220 15% 8% / 0.8);
@@ -62,26 +62,26 @@
     --radius-sm: 0.5rem;
     --radius-lg: 1rem;
 
-    /* Sidebar */
-    --sidebar-background: 220 20% 6%;
+    /* Sidebar with Glass Effect */
+    --sidebar-background: 220 20% 6% / 0.85;
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 210 100% 60%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 220 20% 12%;
+    --sidebar-accent: 220 20% 12% / 0.7;
     --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 220 20% 12%;
+    --sidebar-border: 220 20% 12% / 0.6;
     --sidebar-ring: 210 100% 60%;
   }
 
   .light {
-    /* Core Colors - Light Blue Theme */
-    --background: 200 60% 96%;
+    /* Core Colors - Light Blue Theme with Transparency */
+    --background: 200 60% 96% / 0.95;
     --foreground: 200 15% 15%;
 
-    /* Cards & Surfaces */
-    --card: 0 0% 100%;
+    /* Cards & Surfaces with Glass Effect */
+    --card: 0 0% 100% / 0.8;
     --card-foreground: 200 15% 15%;
-    --card-border: 200 30% 85%;
+    --card-border: 200 30% 85% / 0.6;
 
     /* Interactive Elements */
     --primary: 210 100% 50%;
@@ -104,35 +104,35 @@
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Utility Colors */
-    --muted: 200 20% 92%;
+    /* Utility Colors with Transparency */
+    --muted: 200 20% 92% / 0.7;
     --muted-foreground: 200 10% 45%;
 
-    --border: 200 30% 85%;
-    --input: 0 0% 100%;
+    --border: 200 30% 85% / 0.6;
+    --input: 0 0% 100% / 0.8;
     --ring: 210 100% 50%;
 
-    /* Popover/Dropdown Colors */
-    --popover: 0 0% 100%;
+    /* Popover/Dropdown Colors with Glass Effect */
+    --popover: 0 0% 100% / 0.9;
     --popover-foreground: 200 15% 15%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%), hsl(210 100% 60%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(200 15% 98%));
-    --gradient-glow: linear-gradient(90deg, hsl(210 100% 50% / 0.1), hsl(210 100% 60% / 0.1));
+    /* Gradients with Transparency */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50% / 0.9), hsl(210 100% 60% / 0.9));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.8), hsl(200 15% 98% / 0.8));
+    --gradient-glow: linear-gradient(90deg, hsl(210 100% 50% / 0.2), hsl(210 100% 60% / 0.2));
 
     /* Shadows */
     --shadow-card: 0 8px 32px hsl(210 100% 50% / 0.1);
     --shadow-glow: 0 0 30px hsl(210 100% 50% / 0.15);
 
-    /* Sidebar */
-    --sidebar-background: 0 0% 98%;
+    /* Sidebar with Glass Effect */
+    --sidebar-background: 0 0% 98% / 0.85;
     --sidebar-foreground: 200 15% 25%;
     --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 200 20% 92%;
+    --sidebar-accent: 200 20% 92% / 0.7;
     --sidebar-accent-foreground: 200 15% 25%;
-    --sidebar-border: 200 30% 85%;
+    --sidebar-border: 200 30% 85% / 0.6;
     --sidebar-ring: 210 100% 50%;
   }
 }
@@ -145,6 +145,26 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    backdrop-filter: blur(20px);
+  }
+
+  /* Glass morphism effects */
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(16px) saturate(180%);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--card-border));
+  }
+
+  .glass-sidebar {
+    backdrop-filter: blur(20px) saturate(180%);
+    background: hsl(var(--sidebar-background));
+    border-right: 1px solid hsl(var(--sidebar-border));
   }
 
   /* Smooth scrolling */

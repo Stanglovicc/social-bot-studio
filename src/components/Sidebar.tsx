@@ -70,7 +70,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col bg-sidebar border-r border-sidebar-border">
+    <div className="flex h-screen w-64 flex-col glass-sidebar">"
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-sidebar-border">
         <div className="flex items-center space-x-2">
