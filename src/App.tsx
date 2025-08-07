@@ -12,6 +12,7 @@ import Team from "./pages/Team";
 import Reports from "./pages/Reports";
 import Chatbot from "./pages/Chatbot";
 import Settings from "./pages/Settings";
+import Vault from "./pages/Vault";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/team" element={<Team />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/chatbot/*" element={<Chatbot />} />
+          <Route path="/vault" element={<Vault />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
