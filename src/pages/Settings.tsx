@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,32 @@ export default function Settings() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [adsConnectionStatus, setAdsConnectionStatus] = useState("connected");
   const [openaiConnectionStatus, setOpenaiConnectionStatus] = useState("connected");
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'dark';
+    }
+    return 'dark';
+  });
+
+  // Apply theme when it changes
+  useEffect(() => {
+    const root = document.documentElement;
+    
+    // Remove all theme classes
+    root.classList.remove('dark', 'light');
+    
+    // Apply the selected theme
+    if (theme === 'auto') {
+      // Use system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add(prefersDark ? 'dark' : 'light');
+    } else {
+      root.classList.add(theme);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   return (
     <DashboardLayout>
