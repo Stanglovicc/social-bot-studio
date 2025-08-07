@@ -109,11 +109,11 @@ export default function Dashboard() {
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatsCard
-            title="Monthly Revenue"
-            value="$127,890"
-            change="+18.2% from last month"
+            title="Total Conversations"
+            value="4,829"
+            change="+15.4% from last month"
             changeType="positive"
-            icon={<DollarSign />}
+            icon={<MessageSquare />}
           />
           <StatsCard
             title="Active Subscribers"
