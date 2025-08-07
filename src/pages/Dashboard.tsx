@@ -38,14 +38,14 @@ const dataByPeriod = {
     converted: { value: "28", change: "+8 today" },
     conversionRate: { value: "8.2%", change: "-0.3% from yesterday" },
     revenueData: [
-      { name: "6AM", revenue: 1200, subscribers: 12 },
-      { name: "9AM", revenue: 1800, subscribers: 18 },
-      { name: "12PM", revenue: 2400, subscribers: 24 },
-      { name: "3PM", revenue: 2100, subscribers: 21 },
-      { name: "6PM", revenue: 2800, subscribers: 28 },
-      { name: "9PM", revenue: 2200, subscribers: 22 },
+      { name: "6AM", conversations: 1200, converted: 12 },
+      { name: "9AM", conversations: 1800, converted: 18 },
+      { name: "12PM", conversations: 2400, converted: 24 },
+      { name: "3PM", conversations: 2100, converted: 21 },
+      { name: "6PM", conversations: 2800, converted: 28 },
+      { name: "9PM", conversations: 2200, converted: 22 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Hourly performance today"
   },
   week: {
@@ -54,15 +54,15 @@ const dataByPeriod = {
     converted: { value: "189", change: "+42 this week" },
     conversionRate: { value: "8.6%", change: "+1.2% from last week" },
     revenueData: [
-      { name: "Mon", revenue: 12400, subscribers: 145 },
-      { name: "Tue", revenue: 15600, subscribers: 168 },
-      { name: "Wed", revenue: 18200, subscribers: 192 },
-      { name: "Thu", revenue: 16800, subscribers: 178 },
-      { name: "Fri", revenue: 22100, subscribers: 215 },
-      { name: "Sat", revenue: 19500, subscribers: 189 },
-      { name: "Sun", revenue: 25300, subscribers: 234 },
+      { name: "Mon", conversations: 12400, converted: 145 },
+      { name: "Tue", conversations: 15600, converted: 168 },
+      { name: "Wed", conversations: 18200, converted: 192 },
+      { name: "Thu", conversations: 16800, converted: 178 },
+      { name: "Fri", conversations: 22100, converted: 215 },
+      { name: "Sat", conversations: 19500, converted: 189 },
+      { name: "Sun", conversations: 25300, converted: 234 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Daily performance this week"
   },
   month: {
@@ -71,12 +71,12 @@ const dataByPeriod = {
     converted: { value: "463", change: "+67 this month" },
     conversionRate: { value: "11.2%", change: "+2.1% from last month" },
     revenueData: [
-      { name: "Week 1", revenue: 45200, subscribers: 412 },
-      { name: "Week 2", revenue: 52800, subscribers: 498 },
-      { name: "Week 3", revenue: 48600, subscribers: 456 },
-      { name: "Week 4", revenue: 61400, subscribers: 573 },
+      { name: "Week 1", conversations: 45200, converted: 412 },
+      { name: "Week 2", conversations: 52800, converted: 498 },
+      { name: "Week 3", conversations: 48600, converted: 456 },
+      { name: "Week 4", conversations: 61400, converted: 573 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Weekly performance this month"
   },
   quarter: {
@@ -85,11 +85,11 @@ const dataByPeriod = {
     converted: { value: "1,387", change: "+245 this quarter" },
     conversionRate: { value: "9.3%", change: "+1.8% from last quarter" },
     revenueData: [
-      { name: "Jan", revenue: 127890, subscribers: 1234 },
-      { name: "Feb", revenue: 145620, subscribers: 1456 },
-      { name: "Mar", revenue: 162340, subscribers: 1589 },
+      { name: "Jan", conversations: 127890, converted: 1234 },
+      { name: "Feb", conversations: 145620, converted: 1456 },
+      { name: "Mar", conversations: 162340, converted: 1589 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Monthly performance this quarter"
   },
   year: {
@@ -98,12 +98,12 @@ const dataByPeriod = {
     converted: { value: "5,234", change: "+1,124 this year" },
     conversionRate: { value: "8.9%", change: "+2.4% from last year" },
     revenueData: [
-      { name: "Q1", revenue: 435850, subscribers: 4279 },
-      { name: "Q2", revenue: 523640, subscribers: 5123 },
-      { name: "Q3", revenue: 612890, subscribers: 5967 },
-      { name: "Q4", revenue: 578320, subscribers: 5634 },
+      { name: "Q1", conversations: 435850, converted: 4279 },
+      { name: "Q2", conversations: 523640, converted: 5123 },
+      { name: "Q3", conversations: 612890, converted: 5967 },
+      { name: "Q4", conversations: 578320, converted: 5634 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Quarterly performance this year"
   },
   all: {
@@ -112,11 +112,11 @@ const dataByPeriod = {
     converted: { value: "12,463", change: "Total conversions" },
     conversionRate: { value: "8.4%", change: "Average rate" },
     revenueData: [
-      { name: "2022", revenue: 1234567, subscribers: 12890 },
-      { name: "2023", revenue: 1876543, subscribers: 18934 },
-      { name: "2024", revenue: 2150870, subscribers: 20823 },
+      { name: "2022", conversations: 1234567, converted: 12890 },
+      { name: "2023", conversations: 1876543, converted: 18934 },
+      { name: "2024", conversations: 2150870, converted: 20823 },
     ],
-    chartTitle: "Revenue & Subscriber Growth",
+    chartTitle: "Conversations and Converted",
     chartSubtitle: "Yearly performance all time"
   }
 };
@@ -252,8 +252,8 @@ export default function Dashboard() {
               <LineChart data={currentData.revenueData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis yAxisId="revenue" orientation="left" stroke="hsl(var(--muted-foreground))" />
-                <YAxis yAxisId="subscribers" orientation="right" stroke="hsl(var(--muted-foreground))" />
+                <YAxis yAxisId="conversations" orientation="left" stroke="hsl(var(--muted-foreground))" />
+                <YAxis yAxisId="converted" orientation="right" stroke="hsl(var(--muted-foreground))" />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "hsl(var(--card))",
@@ -262,20 +262,20 @@ export default function Dashboard() {
                   }}
                 />
                 <Line 
-                  yAxisId="revenue"
+                  yAxisId="conversations"
                   type="monotone" 
-                  dataKey="revenue" 
+                  dataKey="conversations" 
                   stroke="hsl(210 100% 60%)" 
                   strokeWidth={3}
-                  name="Revenue ($)"
+                  name="Conversations"
                 />
                 <Line 
-                  yAxisId="subscribers"
+                  yAxisId="converted"
                   type="monotone" 
-                  dataKey="subscribers" 
+                  dataKey="converted" 
                   stroke="hsl(220 80% 40%)" 
                   strokeWidth={2}
-                  name="New Subscribers"
+                  name="Converted"
                 />
               </LineChart>
             </ResponsiveContainer>
