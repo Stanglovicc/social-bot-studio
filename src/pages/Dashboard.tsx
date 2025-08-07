@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { StatsCard } from "@/components/StatsCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   MessageSquare,
   Users,
@@ -85,6 +87,7 @@ const recentActivity = [
 ];
 
 export default function Dashboard() {
+  const [selectedPeriod, setSelectedPeriod] = useState("month");
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -99,6 +102,19 @@ export default function Dashboard() {
               <p>Last updated: {new Date().toLocaleDateString()}</p>
               <p className="text-xs">Role: Admin</p>
             </div>
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="month">This Month</SelectItem>
+                <SelectItem value="quarter">This Quarter</SelectItem>
+                <SelectItem value="year">This Year</SelectItem>
+                <SelectItem value="all">All Time</SelectItem>
+              </SelectContent>
+            </Select>
             <Button variant="outline" size="sm">
               <FileText className="w-4 h-4 mr-2" />
               Export Report
