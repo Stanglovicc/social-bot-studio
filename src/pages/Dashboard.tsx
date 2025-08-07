@@ -130,9 +130,9 @@ export default function Dashboard() {
             icon={<MessageSquare />}
           />
           <StatsCard
-            title="Top Model"
-            value="Emily"
-            change="$25.3K this month"
+            title="Conversion Rate"
+            value="11.2%"
+            change="+2.1% from last month"
             changeType="positive"
             icon={<Crown />}
           />
