@@ -25,9 +25,14 @@ const navigation = [
     icon: BarChart3,
   },
   {
+    name: "ChatBot",
+    href: "/chatbot",
+    icon: Bot,
+  },
+  {
     name: "Models",
     href: "/models",
-    icon: Bot,
+    icon: Users,
   },
   {
     name: "Chatter Workspace",
