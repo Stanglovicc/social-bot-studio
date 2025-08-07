@@ -184,29 +184,8 @@ export default function Models() {
       <div className="flex-1 p-6 overflow-auto">
         {selectedModelData ? (
           <div className="space-y-6">
-            {/* Model Header */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <img
-                  src={selectedModelData.avatar}
-                  alt={selectedModelData.name}
-                  className="w-20 h-20 rounded-full object-cover"
-                />
-                <div>
-                  <h1 className="text-3xl font-bold text-foreground">{editedPersonality?.name || selectedModelData.personality.name}</h1>
-                  <p className="text-lg text-muted-foreground">{selectedModelData.username}</p>
-                  <div className="flex items-center space-x-4 mt-2">
-                    <div className="flex items-center space-x-2">
-                      <div className={`w-3 h-3 rounded-full ${selectedModelData.status === 'Active' ? 'bg-success' : 'bg-warning'}`}></div>
-                      <span className="text-sm text-muted-foreground">{selectedModelData.status}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">• {selectedModelData.lastActive}</span>
-                    <Badge className={selectedModelData.tier === 'Premium' ? 'bg-warning/10 text-warning border-warning/20' : 'bg-muted/10 text-muted-foreground border-muted/20'}>
-                      {selectedModelData.tier}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
+            {/* Save Button */}
+            <div className="flex justify-end mb-6">
               <Button onClick={handleSavePersonality} className="bg-gradient-primary">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
