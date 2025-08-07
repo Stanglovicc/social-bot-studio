@@ -35,16 +35,6 @@ const navigation = [
     icon: Users,
   },
   {
-    name: "Chatter Workspace",
-    href: "/chatters",
-    icon: FolderOpen,
-    children: [
-      { name: "Active Chats", href: "/chatters" },
-      { name: "Message Templates", href: "/chatters/templates" },
-      { name: "Subscriber Notes", href: "/chatters/notes" },
-    ],
-  },
-  {
     name: "Content Calendar",
     href: "/calendar",
     icon: Calendar,
@@ -73,7 +63,7 @@ const navigation = [
 
 export function Sidebar() {
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Chatter Workspace"]);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const toggleExpanded = (name: string) => {
     setExpandedItems(prev =>
@@ -107,60 +97,18 @@ export function Sidebar() {
       <nav className="flex-1 overflow-y-auto p-4 space-y-2">
         {navigation.map((item) => (
           <div key={item.name}>
-            {item.children ? (
-              <Collapsible
-                open={expandedItems.includes(item.name)}
-                onOpenChange={() => toggleExpanded(item.name)}
+            <Link to={item.href}>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start h-10 px-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
+                  isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                )}
               >
-                <CollapsibleTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "w-full justify-between h-10 px-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
-                      isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
-                    )}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <item.icon className="w-4 h-4" />
-                      <span className="text-sm font-medium">{item.name}</span>
-                    </div>
-                    {expandedItems.includes(item.name) ? (
-                      <ChevronDown className="w-4 h-4" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4" />
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="space-y-1 mt-1">
-                  {item.children.map((child) => (
-                    <Link key={child.href} to={child.href}>
-                      <Button
-                        variant="ghost"
-                        className={cn(
-                          "w-full justify-start h-9 px-6 ml-3 text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
-                          isActive(child.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
-                        )}
-                      >
-                        {child.name}
-                      </Button>
-                    </Link>
-                  ))}
-                </CollapsibleContent>
-              </Collapsible>
-            ) : (
-              <Link to={item.href}>
-                <Button
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start h-10 px-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
-                  )}
-                >
-                  <item.icon className="w-4 h-4 mr-3" />
-                  <span className="text-sm font-medium">{item.name}</span>
-                </Button>
-              </Link>
-            )}
+                <item.icon className="w-4 h-4 mr-3" />
+                <span className="text-sm font-medium">{item.name}</span>
+              </Button>
+            </Link>
           </div>
         ))}
       </nav>
