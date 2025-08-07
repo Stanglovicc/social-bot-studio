@@ -62,14 +62,14 @@
     --radius-sm: 0.5rem;
     --radius-lg: 1rem;
 
-    /* Sidebar with Glass Effect */
-    --sidebar-background: 220 20% 6% / 0.85;
+    /* Sidebar with Grey Gradient */
+    --sidebar-background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 210 100% 60%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 220 20% 12% / 0.7;
+    --sidebar-accent: 210 8% 25% / 0.7;
     --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 220 20% 12% / 0.6;
+    --sidebar-border: 210 8% 20% / 0.6;
     --sidebar-ring: 210 100% 60%;
   }
 
@@ -125,14 +125,14 @@
     --shadow-card: 0 8px 32px hsl(210 100% 50% / 0.1);
     --shadow-glow: 0 0 30px hsl(210 100% 50% / 0.15);
 
-    /* Sidebar with Glass Effect */
-    --sidebar-background: 0 0% 98% / 0.85;
+    /* Sidebar with Grey Gradient */
+    --sidebar-background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e0 100%);
     --sidebar-foreground: 200 15% 25%;
     --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 200 20% 92% / 0.7;
+    --sidebar-accent: 200 20% 85% / 0.7;
     --sidebar-accent-foreground: 200 15% 25%;
-    --sidebar-border: 200 30% 85% / 0.6;
+    --sidebar-border: 200 30% 80% / 0.6;
     --sidebar-ring: 210 100% 50%;
   }
 }
@@ -163,7 +163,7 @@
 
   .glass-sidebar {
     backdrop-filter: blur(20px) saturate(180%);
-    background: hsl(var(--sidebar-background));
+    background: var(--sidebar-background);
     border-right: 1px solid hsl(var(--sidebar-border));
   }
 
