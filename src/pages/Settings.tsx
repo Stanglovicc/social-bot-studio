@@ -44,29 +44,29 @@ export default function Settings() {
           <p className="text-muted-foreground">Manage your account and integrations</p>
         </div>
 
-        <Tabs defaultValue="profile" className="w-full">
+        <Tabs defaultValue="account" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="account">Account Info</TabsTrigger>
             <TabsTrigger value="adspower">AdsPower</TabsTrigger>
             <TabsTrigger value="elevenlabs">ElevenLabs</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile" className="space-y-6">
+          <TabsContent value="account" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <User className="w-5 h-5" />
-                  <span>Basic Information</span>
+                  <span>Account Information</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="username">Username</Label>
                     <Input
-                      id="name"
-                      placeholder="Enter your full name"
-                      defaultValue="John Doe"
+                      id="username"
+                      placeholder="Enter your username"
+                      defaultValue="admin_user"
                     />
                   </div>
                   <div>
@@ -74,28 +74,49 @@ export default function Settings() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="john@example.com"
-                      defaultValue="john@example.com"
+                      placeholder="admin@example.com"
+                      defaultValue="admin@example.com"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="company">Company</Label>
+                    <Label htmlFor="current-password">Current Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="current-password"
+                        type={showAdsKey ? "text" : "password"}
+                        placeholder="Enter current password"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                        onClick={() => setShowAdsKey(!showAdsKey)}
+                      >
+                        {showAdsKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="new-password">New Password</Label>
                     <Input
-                      id="company"
-                      placeholder="Your company name"
-                      defaultValue="Acme Corp"
+                      id="new-password"
+                      type="password"
+                      placeholder="Enter new password (optional)"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="timezone">Timezone</Label>
+                    <Label htmlFor="confirm-password">Confirm New Password</Label>
                     <Input
-                      id="timezone"
-                      placeholder="UTC-5"
-                      defaultValue="UTC-5"
+                      id="confirm-password"
+                      type="password"
+                      placeholder="Confirm new password"
                     />
                   </div>
                 </div>
-                <Button>Save Changes</Button>
+                <div className="flex space-x-3">
+                  <Button>Update Account</Button>
+                  <Button variant="outline">Change Password</Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
