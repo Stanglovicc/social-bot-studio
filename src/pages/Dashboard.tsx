@@ -272,27 +272,70 @@ export default function Dashboard() {
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Revenue & Subscriber Growth */}
-          <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+          {/* Conversations & Conversions Chart */}
+          <Card className="p-6 bg-gradient-to-br from-background via-background/95 to-primary/5 border-primary/10 shadow-lg">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-foreground">{currentData.chartTitle}</h3>
-                <p className="text-sm text-muted-foreground">{currentData.chartSubtitle}</p>
+                <h3 className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  {currentData.chartTitle}
+                </h3>
+                <p className="text-sm text-muted-foreground flex items-center mt-1">
+                  <Activity className="w-4 h-4 mr-1" />
+                  {currentData.chartSubtitle}
+                </p>
               </div>
-              <Button variant="outline" size="sm">{selectedPeriod === 'today' ? 'Hours' : selectedPeriod === 'week' ? 'Days' : selectedPeriod === 'month' ? 'Weeks' : selectedPeriod === 'quarter' ? 'Months' : selectedPeriod === 'year' ? 'Quarters' : 'Years'}</Button>
+              <div className="flex items-center space-x-2">
+                <div className="px-3 py-1.5 bg-primary/10 rounded-lg">
+                  <span className="text-xs font-medium text-primary">
+                    {selectedPeriod === 'today' ? 'Hours' : selectedPeriod === 'week' ? 'Days' : selectedPeriod === 'month' ? 'Weeks' : selectedPeriod === 'quarter' ? 'Months' : selectedPeriod === 'year' ? 'Quarters' : 'Years'}
+                  </span>
+                </div>
+              </div>
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={currentData.revenueData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis yAxisId="conversations" orientation="left" stroke="hsl(var(--muted-foreground))" />
-                <YAxis yAxisId="converted" orientation="right" stroke="hsl(var(--muted-foreground))" />
+            <ResponsiveContainer width="100%" height={320}>
+              <LineChart data={currentData.revenueData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="conversationsGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(210 100% 60%)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(210 100% 60%)" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="convertedGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(145 63% 42%)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="hsl(145 63% 42%)" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  yAxisId="conversations" 
+                  orientation="left" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  yAxisId="converted" 
+                  orientation="right" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "hsl(var(--card))",
                     border: "1px solid hsl(var(--border))",
-                    borderRadius: "var(--radius)",
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
                   }}
+                  labelStyle={{ color: "hsl(var(--foreground))", fontWeight: "600" }}
                 />
                 <Line 
                   yAxisId="conversations"
@@ -301,44 +344,113 @@ export default function Dashboard() {
                   stroke="hsl(210 100% 60%)" 
                   strokeWidth={3}
                   name="Conversations"
+                  fill="url(#conversationsGradient)"
+                  dot={{ fill: "hsl(210 100% 60%)", strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, stroke: "hsl(210 100% 60%)", strokeWidth: 2, fill: "white" }}
                 />
                 <Line 
                   yAxisId="converted"
                   type="monotone" 
                   dataKey="converted" 
-                  stroke="hsl(220 80% 40%)" 
-                  strokeWidth={2}
+                  stroke="hsl(145 63% 42%)" 
+                  strokeWidth={3}
                   name="Converted"
+                  fill="url(#convertedGradient)"
+                  strokeDasharray="5 5"
+                  dot={{ fill: "hsl(145 63% 42%)", strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, stroke: "hsl(145 63% 42%)", strokeWidth: 2, fill: "white" }}
                 />
               </LineChart>
             </ResponsiveContainer>
+            <div className="flex items-center justify-center space-x-8 mt-4 pt-4 border-t border-border/50">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                <span className="text-xs font-medium text-muted-foreground">Conversations</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-green-600"></div>
+                <span className="text-xs font-medium text-muted-foreground">Converted</span>
+              </div>
+            </div>
           </Card>
 
-          {/* Model Chat Performance */}
-          <Card className="p-6 bg-gradient-card border-card-border shadow-card">
+          {/* Model Performance Chart */}
+          <Card className="p-6 bg-gradient-to-br from-background via-background/95 to-secondary/5 border-secondary/10 shadow-lg">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-foreground">Model Chat Performance</h3>
-                <p className="text-sm text-muted-foreground">Messages and conversions by model</p>
+                <h3 className="text-xl font-bold text-foreground bg-gradient-to-r from-secondary to-secondary/70 bg-clip-text text-transparent">
+                  Model Performance
+                </h3>
+                <p className="text-sm text-muted-foreground flex items-center mt-1">
+                  <TrendingUp className="w-4 h-4 mr-1" />
+                  Messages and conversions by model
+                </p>
               </div>
-              <Button variant="outline" size="sm">{selectedPeriod === 'today' ? 'Today' : selectedPeriod === 'week' ? 'This Week' : selectedPeriod === 'month' ? 'This Month' : selectedPeriod === 'quarter' ? 'This Quarter' : selectedPeriod === 'year' ? 'This Year' : 'All Time'}</Button>
+              <div className="px-3 py-1.5 bg-secondary/10 rounded-lg">
+                <span className="text-xs font-medium text-secondary">
+                  {selectedPeriod === 'today' ? 'Today' : selectedPeriod === 'week' ? 'This Week' : selectedPeriod === 'month' ? 'This Month' : selectedPeriod === 'quarter' ? 'This Quarter' : selectedPeriod === 'year' ? 'This Year' : 'All Time'}
+                </span>
+              </div>
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={currentChatData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis stroke="hsl(var(--muted-foreground))" />
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={currentChatData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="messagesGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(220 70% 60%)" stopOpacity={0.9}/>
+                    <stop offset="100%" stopColor="hsl(220 70% 60%)" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <linearGradient id="conversionsGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(262 83% 58%)" stopOpacity={0.9}/>
+                    <stop offset="100%" stopColor="hsl(262 83% 58%)" stopOpacity={0.3}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "hsl(var(--card))",
                     border: "1px solid hsl(var(--border))",
-                    borderRadius: "var(--radius)",
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
                   }}
+                  labelStyle={{ color: "hsl(var(--foreground))", fontWeight: "600" }}
                 />
-                <Bar dataKey="messages" fill="hsl(210 100% 60%)" radius={[2, 2, 0, 0]} name="Messages" />
-                <Bar dataKey="conversions" fill="hsl(220 80% 40%)" radius={[2, 2, 0, 0]} name="Conversions" />
+                <Bar 
+                  dataKey="messages" 
+                  fill="url(#messagesGradient)" 
+                  radius={[6, 6, 0, 0]} 
+                  name="Messages"
+                />
+                <Bar 
+                  dataKey="conversions" 
+                  fill="url(#conversionsGradient)" 
+                  radius={[6, 6, 0, 0]} 
+                  name="Conversions"
+                />
               </BarChart>
             </ResponsiveContainer>
+            <div className="flex items-center justify-center space-x-8 mt-4 pt-4 border-t border-border/50">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                <span className="text-xs font-medium text-muted-foreground">Messages</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                <span className="text-xs font-medium text-muted-foreground">Conversions</span>
+              </div>
+            </div>
           </Card>
         </div>
 
