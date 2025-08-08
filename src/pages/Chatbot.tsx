@@ -3,7 +3,6 @@ import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import {
   Bot,
@@ -58,7 +57,7 @@ const adsPowerProfiles = [
 export default function Chatbot() {
   const [selectedModel, setSelectedModel] = useState<number | null>(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [adsPowerAssignments, setAdsPowerAssignments] = useState<Record<string, string>>({});
+  const [adsPowerAssignments, setAdsPowerAssignments] = useState<Record<string, string[]>>({});
   const [isRunning, setIsRunning] = useState(false);
 
   const selectedModelData = availableModels.find(m => m.id === selectedModel);
@@ -83,16 +82,30 @@ export default function Chatbot() {
   };
 
   const handleAdsPowerAssignment = (platform: string, profileId: string) => {
-    setAdsPowerAssignments(prev => ({
-      ...prev,
-      [platform]: profileId
-    }));
+    setAdsPowerAssignments(prev => {
+      const currentProfiles = prev[platform] || [];
+      const isAlreadySelected = currentProfiles.includes(profileId);
+      
+      if (isAlreadySelected) {
+        // Remove profile if already selected
+        return {
+          ...prev,
+          [platform]: currentProfiles.filter(id => id !== profileId)
+        };
+      } else {
+        // Add profile if not selected
+        return {
+          ...prev,
+          [platform]: [...currentProfiles, profileId]
+        };
+      }
+    });
   };
 
   const isConfigurationComplete = () => {
     return selectedModel && 
            selectedPlatforms.length > 0 && 
-           selectedPlatforms.every(platform => adsPowerAssignments[platform]);
+           selectedPlatforms.every(platform => adsPowerAssignments[platform] && adsPowerAssignments[platform].length > 0);
   };
 
   const handleRunBot = () => {
@@ -143,22 +156,30 @@ export default function Chatbot() {
           
           <div className="space-y-4">
             <Label htmlFor="model-select" className="text-sm font-medium text-foreground">Select a Model</Label>
-            <Select value={selectedModel?.toString() || ""} onValueChange={(value) => setSelectedModel(parseInt(value))}>
-              <SelectTrigger className="w-full max-w-md">
-                <SelectValue placeholder="Choose a model..." />
-              </SelectTrigger>
-              <SelectContent>
-                {availableModels.map((model) => (
-                  <SelectItem key={model.id} value={model.id.toString()}>
-                    <div className="flex items-center space-x-2">
-                      <Bot className="w-4 h-4" />
-                      <span>{model.name}</span>
-                      <span className="text-muted-foreground">({model.tier})</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {availableModels.map((model) => {
+                const isSelected = selectedModel === model.id;
+                
+                return (
+                  <div
+                    key={model.id}
+                    className={`flex items-center space-x-3 p-4 rounded-lg border cursor-pointer transition-all ${
+                      isSelected 
+                        ? "border-primary bg-primary/10 shadow-md" 
+                        : "border-border hover:border-border/80 hover:bg-accent/5"
+                    }`}
+                    onClick={() => setSelectedModel(model.id)}
+                  >
+                    <Bot className="w-5 h-5" />
+                    <div>
+                      <p className="font-medium text-foreground">{model.name}</p>
+                      <p className="text-sm text-muted-foreground">{model.username} • {model.tier}</p>
                     </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                    {isSelected && <CheckCircle className="w-5 h-5 text-success ml-auto" />}
+                  </div>
+                );
+              })}
+            </div>
             
             {selectedModelData && (
               <div className="mt-4 p-4 bg-accent/5 rounded-lg border border-accent/20">
@@ -240,34 +261,58 @@ export default function Chatbot() {
                 if (!platform) return null;
                 
                 const Icon = platform.icon;
+                const selectedProfiles = adsPowerAssignments[platformId] || [];
                 
                 return (
                   <div key={platformId} className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Icon className="w-5 h-5" style={{ color: platform.color }} />
                       <Label className="text-base font-medium text-foreground">{platform.name}:</Label>
+                      <span className="text-sm text-muted-foreground">
+                        ({selectedProfiles.length} profile{selectedProfiles.length !== 1 ? 's' : ''} selected)
+                      </span>
                     </div>
                     
-                    <Select 
-                      value={adsPowerAssignments[platformId] || ""} 
-                      onValueChange={(value) => handleAdsPowerAssignment(platformId, value)}
-                    >
-                      <SelectTrigger className="w-full max-w-md ml-8">
-                        <SelectValue placeholder={`Select AdsPower profile for ${platform.name}...`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {adsPowerProfiles.map((profile) => (
-                          <SelectItem key={profile.id} value={profile.id}>
-                            {profile.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="ml-8 space-y-2">
+                      <Label className="text-sm text-muted-foreground">Select multiple AdsPower profiles:</Label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {adsPowerProfiles.map((profile) => {
+                          const isSelected = selectedProfiles.includes(profile.id);
+                          
+                          return (
+                            <div
+                              key={profile.id}
+                              className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                                isSelected 
+                                  ? "border-primary bg-primary/10 shadow-md" 
+                                  : "border-border hover:border-border/80 hover:bg-accent/5"
+                              }`}
+                              onClick={() => handleAdsPowerAssignment(platformId, profile.id)}
+                            >
+                              <Checkbox 
+                                checked={isSelected}
+                                className="pointer-events-none"
+                              />
+                              <span className="font-medium text-foreground">{profile.name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      {selectedProfiles.length > 0 && (
+                        <div className="mt-3 p-3 bg-accent/5 rounded-lg border border-accent/20">
+                          <p className="text-sm font-medium text-foreground">Selected profiles:</p>
+                          <p className="text-sm text-muted-foreground">
+                            {selectedProfiles.map(id => adsPowerProfiles.find(p => p.id === id)?.name).join(", ")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 );
               })}
               
-              {selectedPlatforms.every(platform => adsPowerAssignments[platform]) && (
+              {selectedPlatforms.every(platform => adsPowerAssignments[platform] && adsPowerAssignments[platform].length > 0) && (
                 <div className="mt-4 p-4 bg-accent/5 rounded-lg border border-accent/20">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-success" />
