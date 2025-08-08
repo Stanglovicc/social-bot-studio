@@ -13,7 +13,7 @@ import {
   ChevronRight,
   Calendar,
   Users,
-  DollarSign,
+  
   Vault,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,6 @@ const navigation = [
     name: "Vault",
     href: "/vault",
     icon: Vault,
-  },
-  {
-    name: "Financials",
-    href: "/financials",
-    icon: DollarSign,
   },
   {
     name: "Reports",

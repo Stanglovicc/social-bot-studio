@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Models from "./pages/Models";
 import Chatters from "./pages/Chatters";
 import Calendar from "./pages/Calendar";
-import Financials from "./pages/Financials";
+
 import Team from "./pages/Team";
 import Reports from "./pages/Reports";
 import Chatbot from "./pages/Chatbot";
@@ -28,7 +28,7 @@ const App = () => (
           <Route path="/models" element={<Models />} />
           <Route path="/chatters" element={<Chatters />} />
           <Route path="/calendar" element={<Calendar />} />
-          <Route path="/financials" element={<Financials />} />
+          
           <Route path="/team" element={<Team />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/chatbot/*" element={<Chatbot />} />
