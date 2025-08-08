@@ -41,6 +41,11 @@ const navigation = [
     icon: Vault,
   },
   {
+    name: "Financials",
+    href: "/financials",
+    icon: DollarSign,
+  },
+  {
     name: "Reports",
     href: "/reports",
     icon: TestTube,
