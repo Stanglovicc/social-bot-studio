@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Users,
   Plus,
-  Settings,
   Search,
   Save,
   User,
   MessageCircle,
   Heart,
   Sparkles,
+  Eye,
 } from "lucide-react";
 
 // Mock data for models
@@ -104,246 +105,281 @@ const modelsData = [
 
 export default function Models() {
   const [selectedModel, setSelectedModel] = useState<number | null>(1);
-  const [editedPersonality, setEditedPersonality] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   
   const selectedModelData = modelsData.find(m => m.id === selectedModel);
-
-  // Initialize edited personality when model changes
-  useEffect(() => {
-    if (selectedModelData) {
-      setEditedPersonality(selectedModelData.personality);
-    }
-  }, [selectedModel, selectedModelData]);
+  const filteredModels = modelsData.filter(model => 
+    model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    model.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSavePersonality = () => {
-    // Here you would save the personality data
-    console.log("Saving personality for model:", selectedModel, editedPersonality);
-    // You can add your save logic here
+    console.log("Saving personality for model:", selectedModel);
   };
 
   return (
     <DashboardLayout>
-      <div className="flex h-full">
+      <div className="flex h-full gap-6">
         {/* Left Sidebar - Model List */}
-      <div className="w-80 border-r border-border bg-card p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground">Models</h2>
-          <Button size="sm" className="bg-gradient-primary">
-            <Plus className="w-4 h-4" />
-          </Button>
-        </div>
-        
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search models..."
-            className="pl-10 bg-background border-border"
-          />
-        </div>
-
-        {/* Model List */}
-        <div className="space-y-2">
-          {modelsData.map((model) => (
-            <button
-              key={model.id}
-              onClick={() => setSelectedModel(model.id)}
-              className={`w-full p-4 rounded-lg text-left transition-all duration-200 ${
-                selectedModel === model.id 
-                  ? 'bg-primary text-primary-foreground shadow-md' 
-                  : 'bg-background hover:bg-accent hover:text-accent-foreground'
-              }`}
-            >
-              <div className="flex items-center space-x-3">
-                <img
-                  src={model.avatar}
-                  alt={model.name}
-                  className="w-12 h-12 rounded-full object-cover"
+        <div className="w-80 space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                Models
+                <Button size="sm" variant="outline">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search models..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold truncate">{model.name}</p>
-                  <p className="text-sm opacity-75 truncate">{model.username}</p>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <div className={`w-2 h-2 rounded-full ${model.status === 'Active' ? 'bg-success' : 'bg-warning'}`}></div>
-                    <span className="text-xs opacity-75">{model.tier}</span>
-                  </div>
-                </div>
               </div>
-            </button>
-          ))}
+
+              {/* Model List */}
+              <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                {filteredModels.map((model) => (
+                  <button
+                    key={model.id}
+                    onClick={() => setSelectedModel(model.id)}
+                    className={`w-full p-3 rounded-lg text-left transition-all ${
+                      selectedModel === model.id 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'hover:bg-accent'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={model.avatar}
+                        alt={model.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{model.name}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <div className={`w-2 h-2 rounded-full ${model.status === 'Active' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                          <Badge variant="secondary" className="text-xs">{model.tier}</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              <Button className="w-full" variant="outline">
+                <Plus className="w-4 h-4 mr-2" />
+                Add New Model
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Add Model Button */}
-        <Button className="w-full bg-gradient-primary" size="lg">
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Model
-        </Button>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 p-6 overflow-auto">
-        {selectedModelData ? (
-          <div className="space-y-6">
-            {/* Save Button */}
-            <div className="flex justify-end mb-6">
-              <Button onClick={handleSavePersonality} className="bg-gradient-primary">
-                <Save className="w-4 h-4 mr-2" />
-                Save Changes
-              </Button>
-            </div>
-
-            {/* Personality Settings */}
-            {editedPersonality && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Basic Information */}
-                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <User className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold text-foreground">Basic Information</h3>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="name" className="text-sm font-medium text-foreground">Full Name</Label>
-                      <Input
-                        id="name"
-                        value={editedPersonality.name}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, name: e.target.value})}
-                        className="mt-1"
+        {/* Main Content Area */}
+        <div className="flex-1">
+          {selectedModelData ? (
+            <div className="space-y-6">
+              {/* Model Header */}
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={selectedModelData.avatar}
+                        alt={selectedModelData.name}
+                        className="w-16 h-16 rounded-full object-cover"
                       />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="age" className="text-sm font-medium text-foreground">Age</Label>
-                        <Input
-                          id="age"
-                          value={editedPersonality.age}
-                          onChange={(e) => setEditedPersonality({...editedPersonality, age: e.target.value})}
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="location" className="text-sm font-medium text-foreground">Location</Label>
-                        <Input
-                          id="location"
-                          value={editedPersonality.location}
-                          onChange={(e) => setEditedPersonality({...editedPersonality, location: e.target.value})}
-                          className="mt-1"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="occupation" className="text-sm font-medium text-foreground">Occupation</Label>
-                      <Input
-                        id="occupation"
-                        value={editedPersonality.occupation}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, occupation: e.target.value})}
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="interests" className="text-sm font-medium text-foreground">Interests (comma separated)</Label>
-                      <Input
-                        id="interests"
-                        value={editedPersonality.interests.join(', ')}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, interests: e.target.value.split(', ')})}
-                        className="mt-1"
-                        placeholder="Fashion, Fitness, Travel..."
-                      />
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Personality & Communication */}
-                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <Heart className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold text-foreground">Personality & Style</h3>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="personality" className="text-sm font-medium text-foreground">Personality Description</Label>
-                      <Textarea
-                        id="personality"
-                        value={editedPersonality.personality}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, personality: e.target.value})}
-                        className="mt-1 min-h-[100px]"
-                        placeholder="Describe the personality traits, characteristics, and vibe..."
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="communication" className="text-sm font-medium text-foreground">Communication Style</Label>
-                      <Textarea
-                        id="communication"
-                        value={editedPersonality.communicationStyle}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, communicationStyle: e.target.value})}
-                        className="mt-1 min-h-[80px]"
-                        placeholder="How does this model communicate? Tone, emoji usage, response style..."
-                      />
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Background & Story */}
-                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <MessageCircle className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold text-foreground">Background & Story</h3>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="background" className="text-sm font-medium text-foreground">Background Story</Label>
-                      <Textarea
-                        id="background"
-                        value={editedPersonality.background}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, background: e.target.value})}
-                        className="mt-1 min-h-[120px]"
-                        placeholder="Tell the model's backstory, how they got started, life experiences..."
-                      />
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Specialties & Services */}
-                <Card className="p-6 bg-gradient-card border-card-border shadow-card">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold text-foreground">Specialties & Services</h3>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="specialties" className="text-sm font-medium text-foreground">Specialties (comma separated)</Label>
-                      <Input
-                        id="specialties"
-                        value={editedPersonality.specialties.join(', ')}
-                        onChange={(e) => setEditedPersonality({...editedPersonality, specialties: e.target.value.split(', ')})}
-                        className="mt-1"
-                        placeholder="Custom content, Role-play, GFE..."
-                      />
-                    </div>
-                    <div className="bg-accent/5 p-4 rounded-lg">
-                      <h4 className="font-medium text-foreground mb-2">Current Specialties:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {editedPersonality.specialties.map((specialty: string, index: number) => (
-                          <Badge key={index} variant="secondary" className="bg-primary/10 text-primary">
-                            {specialty}
+                        <CardTitle className="text-xl">{selectedModelData.name}</CardTitle>
+                        <p className="text-muted-foreground">{selectedModelData.username}</p>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <Badge variant={selectedModelData.status === 'Active' ? 'default' : 'secondary'}>
+                            {selectedModelData.status}
                           </Badge>
-                        ))}
+                          <Badge variant="outline">{selectedModelData.tier}</Badge>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        <Eye className="w-4 h-4 mr-2" />
+                        Preview
+                      </Button>
+                      <Button onClick={handleSavePersonality} size="sm">
+                        <Save className="w-4 h-4 mr-2" />
+                        Save
+                      </Button>
+                    </div>
                   </div>
-                </Card>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg text-muted-foreground">Select a model to view details</p>
+                </CardHeader>
+              </Card>
+
+              {/* Model Configuration Tabs */}
+              <Tabs defaultValue="basic" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="basic">Basic Info</TabsTrigger>
+                  <TabsTrigger value="personality">Personality</TabsTrigger>
+                  <TabsTrigger value="background">Background</TabsTrigger>
+                  <TabsTrigger value="specialties">Specialties</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="basic" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <User className="w-5 h-5" />
+                        <span>Basic Information</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="name">Full Name</Label>
+                          <Input
+                            id="name"
+                            defaultValue={selectedModelData.personality.name}
+                            placeholder="Enter full name"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="age">Age</Label>
+                          <Input
+                            id="age"
+                            defaultValue={selectedModelData.personality.age}
+                            placeholder="Enter age"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="location">Location</Label>
+                          <Input
+                            id="location"
+                            defaultValue={selectedModelData.personality.location}
+                            placeholder="Enter location"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="occupation">Occupation</Label>
+                          <Input
+                            id="occupation"
+                            defaultValue={selectedModelData.personality.occupation}
+                            placeholder="Enter occupation"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="interests">Interests</Label>
+                        <Input
+                          id="interests"
+                          defaultValue={selectedModelData.personality.interests.join(', ')}
+                          placeholder="Fashion, Fitness, Travel..."
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="personality" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <Heart className="w-5 h-5" />
+                        <span>Personality & Communication</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <Label htmlFor="personality">Personality Description</Label>
+                        <Textarea
+                          id="personality"
+                          defaultValue={selectedModelData.personality.personality}
+                          placeholder="Describe personality traits and characteristics..."
+                          className="min-h-[120px]"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="communication">Communication Style</Label>
+                        <Textarea
+                          id="communication"
+                          defaultValue={selectedModelData.personality.communicationStyle}
+                          placeholder="How does this model communicate?"
+                          className="min-h-[100px]"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="background" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <MessageCircle className="w-5 h-5" />
+                        <span>Background Story</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div>
+                        <Label htmlFor="background">Background Story</Label>
+                        <Textarea
+                          id="background"
+                          defaultValue={selectedModelData.personality.background}
+                          placeholder="Tell the model's backstory..."
+                          className="min-h-[150px]"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="specialties" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <Sparkles className="w-5 h-5" />
+                        <span>Specialties & Services</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <Label htmlFor="specialties">Specialties</Label>
+                        <Input
+                          id="specialties"
+                          defaultValue={selectedModelData.personality.specialties.join(', ')}
+                          placeholder="Custom content, Role-play, GFE..."
+                        />
+                      </div>
+                      <div className="bg-muted/30 p-4 rounded-lg">
+                        <h4 className="font-medium mb-3">Current Specialties:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedModelData.personality.specialties.map((specialty: string, index: number) => (
+                            <Badge key={index} variant="secondary">
+                              {specialty}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-          </div>
-        )}
-      </div>
+          ) : (
+            <Card className="h-full">
+              <CardContent className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground">Select a model to view details</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </DashboardLayout>
   );
