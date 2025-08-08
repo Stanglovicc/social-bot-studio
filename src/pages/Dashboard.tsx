@@ -290,7 +290,7 @@ export default function Dashboard() {
                 </span>
               </div>
             </div>
-            <div className="flex-1 min-h-0" style={{ minHeight: '200px' }}>
+            <div className="flex-1 min-h-0" style={{ minHeight: '280px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={currentData.revenueData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
                   <defs>
@@ -391,7 +391,7 @@ export default function Dashboard() {
                 </span>
               </div>
             </div>
-            <div className="flex-1 min-h-0" style={{ minHeight: '200px' }}>
+            <div className="flex-1 min-h-0" style={{ minHeight: '280px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={currentChatData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
                   <defs>
