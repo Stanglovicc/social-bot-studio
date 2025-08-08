@@ -206,9 +206,9 @@ export default function Dashboard() {
   const currentChatData = chatActivityDataByPeriod[selectedPeriod as keyof typeof chatActivityDataByPeriod];
   return (
     <DashboardLayout>
-      <div className="space-y-4 h-full overflow-hidden">
+      <div className="h-full flex flex-col space-y-4 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-shrink-0">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Agency Dashboard</h1>
             <p className="text-sm text-muted-foreground">Overview of your OnlyFans agency performance</p>
@@ -239,7 +239,7 @@ export default function Dashboard() {
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4 flex-shrink-0">
           <StatsCard
             title="Total Conversations"
             value={currentData.conversations.value}
@@ -273,8 +273,8 @@ export default function Dashboard() {
         {/* Charts Row */}
         <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
           {/* Conversations & Conversions Chart */}
-          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-primary/5 border-primary/10 shadow-lg flex flex-col">
-            <div className="flex items-center justify-between mb-3">
+          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-primary/5 border-primary/10 shadow-lg flex flex-col min-h-0">
+            <div className="flex items-center justify-between mb-3 flex-shrink-0">
               <div>
                 <h3 className="text-lg font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                   {currentData.chartTitle}
@@ -290,9 +290,9 @@ export default function Dashboard() {
                 </span>
               </div>
             </div>
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0" style={{ minHeight: '200px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={currentData.revenueData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                <LineChart data={currentData.revenueData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
                   <defs>
                     <linearGradient id="conversationsGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(210 100% 60%)" stopOpacity={0.8}/>
@@ -318,6 +318,7 @@ export default function Dashboard() {
                     fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    width={40}
                   />
                   <YAxis 
                     yAxisId="converted" 
@@ -326,6 +327,7 @@ export default function Dashboard() {
                     fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    width={40}
                   />
                   <Tooltip
                     contentStyle={{
@@ -359,7 +361,7 @@ export default function Dashboard() {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50">
+            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50 flex-shrink-0">
               <div className="flex items-center space-x-1">
                 <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Conversations</span>
@@ -372,8 +374,8 @@ export default function Dashboard() {
           </Card>
 
           {/* Model Performance Chart */}
-          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-secondary/5 border-secondary/10 shadow-lg flex flex-col">
-            <div className="flex items-center justify-between mb-3">
+          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-secondary/5 border-secondary/10 shadow-lg flex flex-col min-h-0">
+            <div className="flex items-center justify-between mb-3 flex-shrink-0">
               <div>
                 <h3 className="text-lg font-bold text-foreground bg-gradient-to-r from-secondary to-secondary/70 bg-clip-text text-transparent">
                   Model Performance
@@ -389,9 +391,9 @@ export default function Dashboard() {
                 </span>
               </div>
             </div>
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0" style={{ minHeight: '200px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={currentChatData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                <BarChart data={currentChatData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
                   <defs>
                     <linearGradient id="messagesGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="hsl(220 70% 60%)" stopOpacity={0.9}/>
@@ -415,6 +417,7 @@ export default function Dashboard() {
                     fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    width={40}
                   />
                   <Tooltip
                     contentStyle={{
@@ -439,7 +442,7 @@ export default function Dashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50">
+            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50 flex-shrink-0">
               <div className="flex items-center space-x-1">
                 <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Messages</span>
