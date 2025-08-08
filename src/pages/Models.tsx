@@ -15,7 +15,6 @@ import {
   User,
   MessageCircle,
   Heart,
-  Sparkles,
   Eye,
 } from "lucide-react";
 
@@ -222,11 +221,10 @@ export default function Models() {
 
               {/* Model Configuration Tabs */}
               <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="basic">Basic Info</TabsTrigger>
                   <TabsTrigger value="personality">Personality</TabsTrigger>
                   <TabsTrigger value="background">Background</TabsTrigger>
-                  <TabsTrigger value="specialties">Specialties</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="basic" className="space-y-4">
@@ -332,37 +330,6 @@ export default function Models() {
                           placeholder="Tell the model's backstory..."
                           className="min-h-[150px]"
                         />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="specialties" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center space-x-2">
-                        <Sparkles className="w-5 h-5" />
-                        <span>Specialties & Services</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <Label htmlFor="specialties">Specialties</Label>
-                        <Input
-                          id="specialties"
-                          defaultValue={selectedModelData.personality.specialties.join(', ')}
-                          placeholder="Custom content, Role-play, GFE..."
-                        />
-                      </div>
-                      <div className="bg-muted/30 p-4 rounded-lg">
-                        <h4 className="font-medium mb-3">Current Specialties:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedModelData.personality.specialties.map((specialty: string, index: number) => (
-                            <Badge key={index} variant="secondary">
-                              {specialty}
-                            </Badge>
-                          ))}
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
