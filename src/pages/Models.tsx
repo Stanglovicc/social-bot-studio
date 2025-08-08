@@ -196,16 +196,10 @@ export default function Models() {
                         <p className="text-muted-foreground">{selectedModelData.username}</p>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="w-4 h-4 mr-2" />
-                        Preview
-                      </Button>
-                      <Button onClick={handleSavePersonality} size="sm">
-                        <Save className="w-4 h-4 mr-2" />
-                        Save
-                      </Button>
-                    </div>
+                    <Button onClick={handleSavePersonality} size="sm">
+                      <Save className="w-4 h-4 mr-2" />
+                      Save
+                    </Button>
                   </div>
                 </CardHeader>
               </Card>
