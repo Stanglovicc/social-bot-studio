@@ -162,10 +162,7 @@ export default function Models() {
                       />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">{model.name}</p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <div className={`w-2 h-2 rounded-full ${model.status === 'Active' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                          <Badge variant="secondary" className="text-xs">{model.tier}</Badge>
-                        </div>
+                        <p className="text-sm text-muted-foreground truncate">{model.username}</p>
                       </div>
                     </div>
                   </button>
@@ -197,12 +194,6 @@ export default function Models() {
                       <div>
                         <CardTitle className="text-xl">{selectedModelData.name}</CardTitle>
                         <p className="text-muted-foreground">{selectedModelData.username}</p>
-                        <div className="flex items-center space-x-2 mt-2">
-                          <Badge variant={selectedModelData.status === 'Active' ? 'default' : 'secondary'}>
-                            {selectedModelData.status}
-                          </Badge>
-                          <Badge variant="outline">{selectedModelData.tier}</Badge>
-                        </div>
                       </div>
                     </div>
                     <div className="flex gap-2">
