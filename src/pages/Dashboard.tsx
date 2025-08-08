@@ -206,20 +206,20 @@ export default function Dashboard() {
   const currentChatData = chatActivityDataByPeriod[selectedPeriod as keyof typeof chatActivityDataByPeriod];
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 h-full overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Agency Dashboard</h1>
-            <p className="text-muted-foreground">Overview of your OnlyFans agency performance</p>
+            <h1 className="text-2xl font-bold text-foreground">Agency Dashboard</h1>
+            <p className="text-sm text-muted-foreground">Overview of your OnlyFans agency performance</p>
           </div>
           <div className="flex items-center space-x-3">
-            <div className="text-right text-sm text-muted-foreground">
+            <div className="text-right text-xs text-muted-foreground">
               <p>Last updated: {new Date().toLocaleDateString()}</p>
               <p className="text-xs">Role: Admin</p>
             </div>
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-28 h-8">
                 <SelectValue placeholder="Period" />
               </SelectTrigger>
               <SelectContent>
@@ -231,15 +231,15 @@ export default function Dashboard() {
                 <SelectItem value="all">All Time</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm">
-              <FileText className="w-4 h-4 mr-2" />
-              Export Report
+            <Button variant="outline" size="sm" className="h-8">
+              <FileText className="w-3 h-3 mr-1" />
+              Export
             </Button>
           </div>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="grid grid-cols-4 gap-4">
           <StatsCard
             title="Total Conversations"
             value={currentData.conversations.value}
@@ -271,183 +271,181 @@ export default function Dashboard() {
         </div>
 
         {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
           {/* Conversations & Conversions Chart */}
-          <Card className="p-6 bg-gradient-to-br from-background via-background/95 to-primary/5 border-primary/10 shadow-lg">
-            <div className="flex items-center justify-between mb-6">
+          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-primary/5 border-primary/10 shadow-lg flex flex-col">
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                <h3 className="text-lg font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                   {currentData.chartTitle}
                 </h3>
-                <p className="text-sm text-muted-foreground flex items-center mt-1">
-                  <Activity className="w-4 h-4 mr-1" />
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <Activity className="w-3 h-3 mr-1" />
                   {currentData.chartSubtitle}
                 </p>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="px-3 py-1.5 bg-primary/10 rounded-lg">
-                  <span className="text-xs font-medium text-primary">
-                    {selectedPeriod === 'today' ? 'Hours' : selectedPeriod === 'week' ? 'Days' : selectedPeriod === 'month' ? 'Weeks' : selectedPeriod === 'quarter' ? 'Months' : selectedPeriod === 'year' ? 'Quarters' : 'Years'}
-                  </span>
-                </div>
+              <div className="px-2 py-1 bg-primary/10 rounded-md">
+                <span className="text-xs font-medium text-primary">
+                  {selectedPeriod === 'today' ? 'Hours' : selectedPeriod === 'week' ? 'Days' : selectedPeriod === 'month' ? 'Weeks' : selectedPeriod === 'quarter' ? 'Months' : selectedPeriod === 'year' ? 'Quarters' : 'Years'}
+                </span>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={320}>
-              <LineChart data={currentData.revenueData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <defs>
-                  <linearGradient id="conversationsGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(210 100% 60%)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(210 100% 60%)" stopOpacity={0.1}/>
-                  </linearGradient>
-                  <linearGradient id="convertedGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(145 63% 42%)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="hsl(145 63% 42%)" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
-                <XAxis 
-                  dataKey="name" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  yAxisId="conversations" 
-                  orientation="left" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  yAxisId="converted" 
-                  orientation="right" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "12px",
-                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                  }}
-                  labelStyle={{ color: "hsl(var(--foreground))", fontWeight: "600" }}
-                />
-                <Line 
-                  yAxisId="conversations"
-                  type="monotone" 
-                  dataKey="conversations" 
-                  stroke="hsl(210 100% 60%)" 
-                  strokeWidth={3}
-                  name="Conversations"
-                  fill="url(#conversationsGradient)"
-                  dot={{ fill: "hsl(210 100% 60%)", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, stroke: "hsl(210 100% 60%)", strokeWidth: 2, fill: "white" }}
-                />
-                <Line 
-                  yAxisId="converted"
-                  type="monotone" 
-                  dataKey="converted" 
-                  stroke="hsl(145 63% 42%)" 
-                  strokeWidth={3}
-                  name="Converted"
-                  fill="url(#convertedGradient)"
-                  strokeDasharray="5 5"
-                  dot={{ fill: "hsl(145 63% 42%)", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, stroke: "hsl(145 63% 42%)", strokeWidth: 2, fill: "white" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-            <div className="flex items-center justify-center space-x-8 mt-4 pt-4 border-t border-border/50">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600"></div>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={currentData.revenueData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="conversationsGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(210 100% 60%)" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="hsl(210 100% 60%)" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="convertedGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(145 63% 42%)" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="hsl(145 63% 42%)" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis 
+                    yAxisId="conversations" 
+                    orientation="left" 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis 
+                    yAxisId="converted" 
+                    orientation="right" 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                      fontSize: "12px",
+                    }}
+                  />
+                  <Line 
+                    yAxisId="conversations"
+                    type="monotone" 
+                    dataKey="conversations" 
+                    stroke="hsl(210 100% 60%)" 
+                    strokeWidth={2}
+                    name="Conversations"
+                    dot={{ fill: "hsl(210 100% 60%)", strokeWidth: 1, r: 3 }}
+                    activeDot={{ r: 4, stroke: "hsl(210 100% 60%)", strokeWidth: 1, fill: "white" }}
+                  />
+                  <Line 
+                    yAxisId="converted"
+                    type="monotone" 
+                    dataKey="converted" 
+                    stroke="hsl(145 63% 42%)" 
+                    strokeWidth={2}
+                    name="Converted"
+                    strokeDasharray="3 3"
+                    dot={{ fill: "hsl(145 63% 42%)", strokeWidth: 1, r: 3 }}
+                    activeDot={{ r: 4, stroke: "hsl(145 63% 42%)", strokeWidth: 1, fill: "white" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50">
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Conversations</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-green-600"></div>
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-500 to-green-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Converted</span>
               </div>
             </div>
           </Card>
 
           {/* Model Performance Chart */}
-          <Card className="p-6 bg-gradient-to-br from-background via-background/95 to-secondary/5 border-secondary/10 shadow-lg">
-            <div className="flex items-center justify-between mb-6">
+          <Card className="p-4 bg-gradient-to-br from-background via-background/95 to-secondary/5 border-secondary/10 shadow-lg flex flex-col">
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 className="text-xl font-bold text-foreground bg-gradient-to-r from-secondary to-secondary/70 bg-clip-text text-transparent">
+                <h3 className="text-lg font-bold text-foreground bg-gradient-to-r from-secondary to-secondary/70 bg-clip-text text-transparent">
                   Model Performance
                 </h3>
-                <p className="text-sm text-muted-foreground flex items-center mt-1">
-                  <TrendingUp className="w-4 h-4 mr-1" />
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <TrendingUp className="w-3 h-3 mr-1" />
                   Messages and conversions by model
                 </p>
               </div>
-              <div className="px-3 py-1.5 bg-secondary/10 rounded-lg">
+              <div className="px-2 py-1 bg-secondary/10 rounded-md">
                 <span className="text-xs font-medium text-secondary">
                   {selectedPeriod === 'today' ? 'Today' : selectedPeriod === 'week' ? 'This Week' : selectedPeriod === 'month' ? 'This Month' : selectedPeriod === 'quarter' ? 'This Quarter' : selectedPeriod === 'year' ? 'This Year' : 'All Time'}
                 </span>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={320}>
-              <BarChart data={currentChatData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <defs>
-                  <linearGradient id="messagesGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(220 70% 60%)" stopOpacity={0.9}/>
-                    <stop offset="100%" stopColor="hsl(220 70% 60%)" stopOpacity={0.3}/>
-                  </linearGradient>
-                  <linearGradient id="conversionsGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="hsl(262 83% 58%)" stopOpacity={0.9}/>
-                    <stop offset="100%" stopColor="hsl(262 83% 58%)" stopOpacity={0.3}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
-                <XAxis 
-                  dataKey="name" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "12px",
-                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                  }}
-                  labelStyle={{ color: "hsl(var(--foreground))", fontWeight: "600" }}
-                />
-                <Bar 
-                  dataKey="messages" 
-                  fill="url(#messagesGradient)" 
-                  radius={[6, 6, 0, 0]} 
-                  name="Messages"
-                />
-                <Bar 
-                  dataKey="conversions" 
-                  fill="url(#conversionsGradient)" 
-                  radius={[6, 6, 0, 0]} 
-                  name="Conversions"
-                />
-              </BarChart>
-            </ResponsiveContainer>
-            <div className="flex items-center justify-center space-x-8 mt-4 pt-4 border-t border-border/50">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
+            <div className="flex-1 min-h-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={currentChatData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="messagesGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="hsl(220 70% 60%)" stopOpacity={0.9}/>
+                      <stop offset="100%" stopColor="hsl(220 70% 60%)" stopOpacity={0.3}/>
+                    </linearGradient>
+                    <linearGradient id="conversionsGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="hsl(262 83% 58%)" stopOpacity={0.9}/>
+                      <stop offset="100%" stopColor="hsl(262 83% 58%)" stopOpacity={0.3}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="2 4" stroke="hsl(var(--border))" strokeOpacity={0.3} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                      fontSize: "12px",
+                    }}
+                  />
+                  <Bar 
+                    dataKey="messages" 
+                    fill="url(#messagesGradient)" 
+                    radius={[4, 4, 0, 0]} 
+                    name="Messages"
+                  />
+                  <Bar 
+                    dataKey="conversions" 
+                    fill="url(#conversionsGradient)" 
+                    radius={[4, 4, 0, 0]} 
+                    name="Conversions"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-center space-x-6 mt-2 pt-2 border-t border-border/50">
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Messages</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-400 to-purple-600"></div>
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-purple-600"></div>
                 <span className="text-xs font-medium text-muted-foreground">Conversions</span>
               </div>
             </div>
