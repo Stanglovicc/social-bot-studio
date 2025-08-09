@@ -4,6 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Bot,
   Instagram,
@@ -12,6 +16,11 @@ import {
   Play,
   CheckCircle,
   Circle,
+  Edit,
+  Save,
+  User,
+  Heart,
+  MessageCircle,
 } from "lucide-react";
 
 // Mock data for models from the Models page
@@ -45,13 +54,102 @@ const platforms = [
   { id: "twitter", name: "Twitter", icon: Twitter, color: "#1DA1F2" },
 ];
 
-// Mock AdsPower profiles
-const adsPowerProfiles = [
-  { id: "profile_001", name: "Profile_001" },
-  { id: "profile_002", name: "Profile_002" },
-  { id: "profile_003", name: "Profile_003" },
-  { id: "profile_004", name: "Profile_004" },
-  { id: "profile_005", name: "Profile_005" },
+// Profile personality type similar to models
+type ProfilePersonality = {
+  age: string;
+  location: string;
+  occupation: string;
+  interests: string[];
+  personality: string;
+  communicationStyle: string;
+  background: string;
+  specialties: string[];
+};
+
+type AdsPowerProfile = {
+  id: string;
+  name: string;
+  username: string;
+  personality: ProfilePersonality;
+};
+
+// Mock AdsPower profiles with full personality data
+const adsPowerProfiles: AdsPowerProfile[] = [
+  { 
+    id: "profile_001", 
+    name: "Profile_001",
+    username: "@profile_001",
+    personality: {
+      age: "",
+      location: "",
+      occupation: "",
+      interests: [],
+      personality: "",
+      communicationStyle: "",
+      background: "",
+      specialties: []
+    }
+  },
+  { 
+    id: "profile_002", 
+    name: "Profile_002",
+    username: "@profile_002",
+    personality: {
+      age: "",
+      location: "",
+      occupation: "",
+      interests: [],
+      personality: "",
+      communicationStyle: "",
+      background: "",
+      specialties: []
+    }
+  },
+  { 
+    id: "profile_003", 
+    name: "Profile_003",
+    username: "@profile_003",
+    personality: {
+      age: "",
+      location: "",
+      occupation: "",
+      interests: [],
+      personality: "",
+      communicationStyle: "",
+      background: "",
+      specialties: []
+    }
+  },
+  { 
+    id: "profile_004", 
+    name: "Profile_004",
+    username: "@profile_004",
+    personality: {
+      age: "",
+      location: "",
+      occupation: "",
+      interests: [],
+      personality: "",
+      communicationStyle: "",
+      background: "",
+      specialties: []
+    }
+  },
+  { 
+    id: "profile_005", 
+    name: "Profile_005",
+    username: "@profile_005",
+    personality: {
+      age: "",
+      location: "",
+      occupation: "",
+      interests: [],
+      personality: "",
+      communicationStyle: "",
+      background: "",
+      specialties: []
+    }
+  },
 ];
 
 export default function Chatbot() {
@@ -59,6 +157,10 @@ export default function Chatbot() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [adsPowerAssignments, setAdsPowerAssignments] = useState<Record<string, string[]>>({});
   const [isRunning, setIsRunning] = useState(false);
+  const [profiles, setProfiles] = useState<AdsPowerProfile[]>(adsPowerProfiles);
+  const [editingProfile, setEditingProfile] = useState<AdsPowerProfile | null>(null);
+  const [activeTab, setActiveTab] = useState<"basic" | "personality" | "background">("basic");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const selectedModelData = availableModels.find(m => m.id === selectedModel);
 
@@ -125,6 +227,42 @@ export default function Chatbot() {
     console.log("Stopping bot");
     // Here you would implement the actual bot stopping logic
   };
+
+  const handleEditProfile = (profile: AdsPowerProfile) => {
+    setEditingProfile({ ...profile });
+    setActiveTab("basic");
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveProfile = () => {
+    if (!editingProfile) return;
+    
+    setProfiles(prev => 
+      prev.map(p => p.id === editingProfile.id ? editingProfile : p)
+    );
+    
+    setIsEditDialogOpen(false);
+    setEditingProfile(null);
+  };
+
+  const updateProfileField = (path: string, value: any) => {
+    if (!editingProfile) return;
+    
+    if (path.startsWith("personality.")) {
+      const key = path.replace("personality.", "");
+      setEditingProfile(prev => ({
+        ...prev!,
+        personality: { ...prev!.personality, [key]: value },
+      }));
+    } else {
+      setEditingProfile(prev => ({ ...prev!, [path]: value } as AdsPowerProfile));
+    }
+  };
+
+  // Helper for interests array to string conversion
+  const interestsText = editingProfile && Array.isArray(editingProfile.personality.interests)
+    ? editingProfile.personality.interests.join(", ")
+    : (editingProfile?.personality.interests as unknown as string) || "";
 
   return (
     <DashboardLayout>
@@ -276,24 +414,39 @@ export default function Chatbot() {
                     <div className="ml-8 space-y-2">
                       <Label className="text-sm text-muted-foreground">Select multiple AdsPower profiles:</Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {adsPowerProfiles.map((profile) => {
+                        {profiles.map((profile) => {
                           const isSelected = selectedProfiles.includes(profile.id);
                           
                           return (
                             <div
                               key={profile.id}
-                              className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                              className={`flex items-center justify-between p-3 rounded-lg border transition-all ${
                                 isSelected 
                                   ? "border-primary bg-primary/10 shadow-md" 
                                   : "border-border hover:border-border/80 hover:bg-accent/5"
                               }`}
-                              onClick={() => handleAdsPowerAssignment(platformId, profile.id)}
                             >
-                              <Checkbox 
-                                checked={isSelected}
-                                className="pointer-events-none"
-                              />
-                              <span className="font-medium text-foreground">{profile.name}</span>
+                              <div 
+                                className="flex items-center space-x-3 cursor-pointer flex-1"
+                                onClick={() => handleAdsPowerAssignment(platformId, profile.id)}
+                              >
+                                <Checkbox 
+                                  checked={isSelected}
+                                  className="pointer-events-none"
+                                />
+                                <span className="font-medium text-foreground">{profile.name}</span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEditProfile(profile);
+                                }}
+                                className="ml-2 p-1 h-8 w-8"
+                              >
+                                <Edit className="w-3 h-3" />
+                              </Button>
                             </div>
                           );
                         })}
@@ -303,7 +456,7 @@ export default function Chatbot() {
                         <div className="mt-3 p-3 bg-accent/5 rounded-lg border border-accent/20">
                           <p className="text-sm font-medium text-foreground">Selected profiles:</p>
                           <p className="text-sm text-muted-foreground">
-                            {selectedProfiles.map(id => adsPowerProfiles.find(p => p.id === id)?.name).join(", ")}
+                            {selectedProfiles.map(id => profiles.find(p => p.id === id)?.name).join(", ")}
                           </p>
                         </div>
                       )}
@@ -386,6 +539,165 @@ export default function Chatbot() {
             )}
           </div>
         </Card>
+
+        {/* Edit Profile Dialog */}
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3">
+                <User className="w-5 h-5" />
+                Edit Profile: {editingProfile?.name}
+              </DialogTitle>
+            </DialogHeader>
+            
+            {editingProfile && (
+              <div className="space-y-6">
+                <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="basic">Basic Info</TabsTrigger>
+                    <TabsTrigger value="personality">Personality</TabsTrigger>
+                    <TabsTrigger value="background">Background</TabsTrigger>
+                  </TabsList>
+
+                  {/* BASIC INFO TAB */}
+                  <TabsContent value="basic" className="space-y-4">
+                    <Card className="p-4">
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label>Profile Name</Label>
+                            <Input
+                              value={editingProfile.name}
+                              onChange={(e) => updateProfileField("name", e.target.value)}
+                              placeholder="Profile name"
+                            />
+                          </div>
+                          <div>
+                            <Label>Username</Label>
+                            <Input
+                              value={editingProfile.username}
+                              onChange={(e) => updateProfileField("username", e.target.value)}
+                              placeholder="@username"
+                            />
+                          </div>
+                          <div>
+                            <Label>Age</Label>
+                            <Input
+                              value={editingProfile.personality.age}
+                              onChange={(e) => updateProfileField("personality.age", e.target.value)}
+                              placeholder="25"
+                            />
+                          </div>
+                          <div>
+                            <Label>Location</Label>
+                            <Input
+                              value={editingProfile.personality.location}
+                              onChange={(e) => updateProfileField("personality.location", e.target.value)}
+                              placeholder="Los Angeles, CA"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <Label>Occupation</Label>
+                          <Input
+                            value={editingProfile.personality.occupation}
+                            onChange={(e) => updateProfileField("personality.occupation", e.target.value)}
+                            placeholder="Content Creator"
+                          />
+                        </div>
+                        <div>
+                          <Label>Interests (comma-separated)</Label>
+                          <Input
+                            value={interestsText}
+                            onChange={(e) => updateProfileField("personality.interests", e.target.value)}
+                            onBlur={(e) => {
+                              const arr = e.target.value
+                                .split(",")
+                                .map((s) => s.trim())
+                                .filter(Boolean);
+                              setEditingProfile(prev => ({
+                                ...prev!,
+                                personality: {...prev!.personality, interests: arr},
+                              }));
+                            }}
+                            placeholder="Gaming, Technology, Travel"
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  {/* PERSONALITY TAB */}
+                  <TabsContent value="personality" className="space-y-4">
+                    <Card className="p-4">
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Personality Description</Label>
+                          <Textarea
+                            className="min-h-[120px]"
+                            value={editingProfile.personality.personality}
+                            onChange={(e) => updateProfileField("personality.personality", e.target.value)}
+                            placeholder="Describe personality traits and characteristics..."
+                          />
+                        </div>
+                        <div>
+                          <Label>Communication Style</Label>
+                          <Textarea
+                            className="min-h-[100px]"
+                            value={editingProfile.personality.communicationStyle}
+                            onChange={(e) => updateProfileField("personality.communicationStyle", e.target.value)}
+                            placeholder="How does this profile communicate? (tone, emojis, style...)"
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  </TabsContent>
+
+                  {/* BACKGROUND TAB */}
+                  <TabsContent value="background" className="space-y-4">
+                    <Card className="p-4">
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Background Story</Label>
+                          <Textarea
+                            className="min-h-[150px]"
+                            value={editingProfile.personality.background}
+                            onChange={(e) => updateProfileField("personality.background", e.target.value)}
+                            placeholder="Tell the profile's backstory and background..."
+                          />
+                        </div>
+                        <div>
+                          <Label>Specialties (comma-separated)</Label>
+                          <Input
+                            value={editingProfile.personality.specialties.join(", ")}
+                            onChange={(e) => {
+                              const arr = e.target.value
+                                .split(",")
+                                .map((s) => s.trim())
+                                .filter(Boolean);
+                              updateProfileField("personality.specialties", arr);
+                            }}
+                            placeholder="Gaming tutorials, Tech reviews, Live streaming"
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
+
+                <div className="flex justify-end gap-2 pt-4 border-t">
+                  <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveProfile}>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Profile
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
