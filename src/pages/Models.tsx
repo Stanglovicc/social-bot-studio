@@ -7,6 +7,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Users, Plus, Search, Save, User, MessageCircle, Heart, Camera } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 
 // --- Demo data ---------------------------------------------------------------
@@ -111,6 +112,7 @@ export default function Models() {
   const [searchTerm, setSearchTerm] = useState("");
   const [form, setForm] = useState<ModelItem>(seedModels[0] ?? emptyModel());
   const [activeTab, setActiveTab] = useState<"basic" | "personality" | "background">("basic");
+  const { toast } = useToast();
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -184,6 +186,13 @@ export default function Models() {
       setSelectedId(newId);
       setForm(created);
     }
+    
+    // Show disclaimer toast
+    toast({
+      title: "Model Saved Successfully",
+      description: "⚠️ This information will be saved and applied across all profiles using this model.",
+      duration: 5000,
+    });
   };
 
   // derived values for inputs that are arrays (interests)
