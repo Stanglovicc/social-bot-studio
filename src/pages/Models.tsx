@@ -6,7 +6,8 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Users, Plus, Search, Save, User, MessageCircle, Heart, Camera } from "lucide-react";
+import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "@/components/ui/alert-dialog";
+import {Users, Plus, Search, Save, User, MessageCircle, Heart, Camera, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -112,6 +113,7 @@ export default function Models() {
   const [searchTerm, setSearchTerm] = useState("");
   const [form, setForm] = useState<ModelItem>(seedModels[0] ?? emptyModel());
   const [activeTab, setActiveTab] = useState<"basic" | "personality" | "background">("basic");
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
   const { toast } = useToast();
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -175,7 +177,12 @@ export default function Models() {
       alert("Please fill in Name and Username.");
       return;
     }
-    //TODO sem fetchovat
+    // Show confirmation dialog instead of saving directly
+    setShowSaveDialog(true);
+  };
+
+  const confirmSave = () => {
+    // Actual save logic
     if (form.id) {
       setModels((prev) => prev.map((m) => (m.id === form.id ? form : m)));
       setSelectedId(form.id);
@@ -187,11 +194,13 @@ export default function Models() {
       setForm(created);
     }
     
-    // Show disclaimer toast
+    setShowSaveDialog(false);
+    
+    // Show success toast
     toast({
       title: "Model Saved Successfully",
-      description: "⚠️ This information will be saved and applied across all profiles using this model.",
-      duration: 5000,
+      description: "Changes have been applied across all profiles using this model.",
+      duration: 3000,
     });
   };
 
@@ -475,6 +484,41 @@ export default function Models() {
           </div>
         </div>
       </div>
+
+      {/* Save Confirmation Dialog */}
+      <AlertDialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-warning" />
+              Confirm Save Changes
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              <p>
+                You are about to save changes to this model. Please be aware that:
+              </p>
+              <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
+                <p className="text-sm font-medium text-warning">
+                  ⚠️ <strong>Important:</strong> These changes will be applied across ALL profiles that use this model.
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Any personality traits, background information, and communication style updates will affect how this model behaves in all associated social media profiles and interactions.
+                </p>
+              </div>
+              <p className="text-sm">
+                Are you sure you want to proceed with saving these changes?
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmSave}>
+              <Save className="w-4 h-4 mr-2" />
+              Yes, Save Changes
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 }
