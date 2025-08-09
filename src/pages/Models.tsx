@@ -6,6 +6,7 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Label} from "@/components/ui/label";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "@/components/ui/alert-dialog";
 import {Users, Plus, Search, Save, User, MessageCircle, Heart, Camera, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +18,7 @@ type ModelPersonality = {
   location: string;
   occupation: string;
   interests: string[]; // store as array, edit as comma-separated
+  tags: string[];
   personality: string;
   communicationStyle: string;
   background: string;
@@ -66,6 +68,24 @@ const Avatar = ({
   );
 };
 
+const availableTags = [
+  "Fitness",
+  "Wellness", 
+  "Fashion",
+  "Beauty",
+  "Travel",
+  "Food",
+  "Lifestyle",
+  "Technology",
+  "Business",
+  "Entertainment",
+  "Education",
+  "Art",
+  "Music",
+  "Gaming",
+  "Sports"
+];
+
 const seedModels: ModelItem[] = [
   {
     id: 1,
@@ -76,6 +96,7 @@ const seedModels: ModelItem[] = [
       location: "Los Angeles, CA",
       occupation: "Yoga Instructor & Content Creator",
       interests: ["Yoga", "Wellness", "Cooking", "Nature"],
+      tags: ["Fitness", "Wellness", "Lifestyle"],
       personality:
         "Sweet, caring, and health-conscious. Always positive and loves helping others feel good.",
       communicationStyle:
@@ -98,6 +119,7 @@ const emptyModel = (): ModelItem => ({
     location: "",
     occupation: "",
     interests: [],
+    tags: [],
     personality: "",
     communicationStyle: "",
     background: "",
@@ -413,7 +435,57 @@ export default function Models() {
                         placeholder="Yoga, Wellness, Cooking, Nature"
                       />
                     </div>
-
+                    
+                    <div>
+                      <Label>Tags</Label>
+                      <div className="space-y-2">
+                        <Select
+                          onValueChange={(value) => {
+                            if (value && !form.personality.tags.includes(value)) {
+                              updateField("personality.tags", [...form.personality.tags, value]);
+                            }
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select tags..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableTags
+                              .filter(tag => !form.personality.tags.includes(tag))
+                              .map((tag) => (
+                                <SelectItem key={tag} value={tag}>
+                                  {tag}
+                                </SelectItem>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        
+                        {form.personality.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {form.personality.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-md text-sm"
+                              >
+                                {tag}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    updateField(
+                                      "personality.tags",
+                                      form.personality.tags.filter(t => t !== tag)
+                                    );
+                                  }}
+                                  className="ml-1 hover:text-destructive"
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
                   </CardContent>
                 </Card>
